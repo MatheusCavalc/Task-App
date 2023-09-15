@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,10 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+Route::get('/my-tasks', [AppController::class, 'index'])->middleware(['auth', 'verified'])->name('my-tasks');
+
+Route::get('/details', [AppController::class, 'details'])->middleware(['auth', 'verified'])->name('details');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
