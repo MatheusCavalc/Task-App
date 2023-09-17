@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Subtask;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -16,12 +17,27 @@ class AppController extends Controller
         ]);
     }
 
-    public function details()
+    public function details($id)
     {
-       // dd(Task::with('subtasks')->find(1));
-
         return Inertia::render('App/Details', [
-            'task' => Task::with('subtasks')->find(1)
+            'task' => Task::with('subtasks')->find($id)
         ]);
+    }
+
+    public function updateStatus(Request $request)
+    {
+        request()->validate([
+            'subtaskId' => ['required'], //, 'exists:card_lists,id'
+            'status' => ['required']
+        ]);
+
+        $options = [
+            'emExecucaoArray' => 'Em execucao',
+            'aguardandoArray' => 'Aguardando',
+        ];
+
+        $status = $options[$request->status] ?? 'Concluida';
+
+        Subtask::where('id', $request->subtaskId)->update(['status' => $status]);
     }
 }

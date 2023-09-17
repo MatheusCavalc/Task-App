@@ -28,7 +28,26 @@ Route::get('/', function () {
 
 Route::get('/my-tasks', [AppController::class, 'index'])->middleware(['auth', 'verified'])->name('my-tasks');
 
-Route::get('/details', [AppController::class, 'details'])->middleware(['auth', 'verified'])->name('details');
+Route::get('/task/{task}/details', [AppController::class, 'details'])->name('task.details')->middleware(['auth', 'verified']);
+Route::put('/cards/{card}/move', [AppController::class, 'updateStatus'])->name('subtasks.status')->middleware(['auth', 'verified']);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

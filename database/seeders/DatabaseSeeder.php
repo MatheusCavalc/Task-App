@@ -50,5 +50,35 @@ class DatabaseSeeder extends Seeder
             'name' => 'Queues with Redis',
             'status' => 'Aguardando', //Em execucao e Concluida
         ]);
+
+        \App\Models\Subtask::create([
+            'user_id' => 1,
+            'task_id' => 1,
+            'name' => 'Bun install',
+            'status' => 'Em execucao', //Em execucao e Concluida
+        ]);
+
+        \App\Models\Subtask::create([
+            'user_id' => 1,
+            'task_id' => 1,
+            'name' => 'Laravel Nova',
+            'status' => 'Em execucao', //Em execucao e Concluida
+        ]);
+
+        \App\Models\Subtask::create([
+            'user_id' => 1,
+            'task_id' => 1,
+            'name' => 'Sanctum API',
+            'status' => 'Concluida', //Em execucao e Concluida
+        ]);
+
+        \App\Models\Subtask::create([
+            'user_id' => 1,
+            'task_id' => 1,
+            'name' => 'Heroicon',
+            'status' => 'Concluida', //Em execucao e Concluida
+        ]);
+
+
     }
 }
