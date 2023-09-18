@@ -4,15 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
+    public function __construct(LayoutController $layoutController)
+    {
+        $this->middleware(function ($request, $next) use ($layoutController) {
+            $layoutController->shareCommonData();
+            return $next($request);
+        });
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return Inertia::render('App/Category/Index', [
+            'categories' => Category::all()
+        ]);
     }
 
     /**
@@ -20,7 +31,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('App/Category/Create');
     }
 
     /**
@@ -28,7 +39,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->request->add(['user_id' => auth()->user()->id]);
+
+        $data = $request->validate([
+            'user_id' => 'required',
+            'name' => 'required|max:255',
+        ]);
+
+        Category::create($data);
+
+        return redirect('/categories')->with('message', 'Category created!');
     }
 
     /**
@@ -44,7 +64,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return Inertia::render('App/Category/Edit', compact('category'));
     }
 
     /**
@@ -52,7 +72,16 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $request->request->add(['user_id' => auth()->user()->id]);
+
+        $data = $request->validate([
+            'user_id' => 'required',
+            'name' => 'required|max:255',
+        ]);
+
+        $category->update($data);
+
+        return redirect('/categories')->with('message', 'Category updated!');
     }
 
     /**
@@ -60,6 +89,9 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        return redirect()->back()
+                ->with('message', 'Category delete');
     }
 }

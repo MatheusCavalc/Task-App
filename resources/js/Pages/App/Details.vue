@@ -97,6 +97,26 @@ const loadData = (data) => {
     }
 }
 
+const editSubtask = (data) => {
+    if (data.array == 'aguardandoArray') {
+        aguardandoArray.value[data.index].name = data.name
+    } else if (data.array == 'emExecucaoArray') {
+        emExecucaoArray.value[data.index].name = data.name
+    } else {
+        concluidaArray.value[data.index].name = data.name
+    }
+}
+
+const removeSubtask = (data) => {
+    if (data.array == 'aguardandoArray') {
+        aguardandoArray.value.splice(data.index, 1)
+    } else if (data.array == 'emExecucaoArray') {
+        emExecucaoArray.value.splice(data.index, 1)
+    } else {
+        concluidaArray.value.splice(data.index, 1)
+    }
+}
+
 loadColumns(props.task.subtasks)
 </script>
 
@@ -118,7 +138,8 @@ loadColumns(props.task.subtasks)
                     @drop="handleDrop('aguardandoArray', $event)" :get-child-payload="getChildPayload"
                     :drop-placeholder="{ className: 'placeholder' }">
                     <Draggable v-for="(item, i) in aguardandoArray" :key="item.id">
-                        <SubtaskItem :index="i" :name="item.name" status="Aguardando" />
+                        <SubtaskItem :index="i" :item="item" status="Aguardando" array="aguardandoArray"
+                            @edit-subtask="editSubtask" @delete-subtask="removeSubtask" />
                     </Draggable>
                 </Container>
 
@@ -134,7 +155,8 @@ loadColumns(props.task.subtasks)
                     @drop="handleDrop('emExecucaoArray', $event)" :get-child-payload="getChildPayload"
                     :drop-placeholder="{ className: 'placeholder' }">
                     <Draggable v-for="(item, i) in emExecucaoArray" :key="item.id">
-                        <SubtaskItem :index="i" :name="item.name" status="Em execucao" />
+                        <SubtaskItem :index="i" :item="item" status="Em execucao" array="emExecucaoArray"
+                            @edit-subtask="editSubtask" @delete-subtask="removeSubtask" />
                     </Draggable>
                 </Container>
 
@@ -150,7 +172,8 @@ loadColumns(props.task.subtasks)
                     @drop="handleDrop('concluidaArray', $event)" :get-child-payload="getChildPayload"
                     :drop-placeholder="{ className: 'placeholder' }">
                     <Draggable v-for="(item, i) in concluidaArray" :key="item.id">
-                        <SubtaskItem :index="i" :name="item.name" status="Concluida" />
+                        <SubtaskItem :index="i" :item="item" status="Concluida" array="concluidaArray"
+                            @edit-subtask="editSubtask" @delete-subtask="removeSubtask" />
                     </Draggable>
                 </Container>
 

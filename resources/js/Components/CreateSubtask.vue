@@ -46,9 +46,9 @@ function submit() {
         <form @submit.prevent="submit">
             <div class="mb-1 flex">
                 <input type="text" id="name" v-model="form.name" placeholder="New Subtask"
-                    class="bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded-l-lg border-r-0 w-full p-3">
+                    class="bg-gray-50 border border-gray-400 text-gray-900 rounded-l-lg border-r-0 w-full p-3">
                 <span @click="create = false"
-                    class="cursor-pointer inline-flex items-center px-3 text-sm text-gray-900 bg-gray-50 border border-l-0 border-gray-400 rounded-r-lg dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                    class="cursor-pointer inline-flex items-center px-3 text-gray-900 bg-gray-50 border border-l-0 border-gray-400 rounded-r-lg dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-6 h-6 mt-0.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />

@@ -66,7 +66,18 @@ class SubtaskController extends Controller
      */
     public function update(Request $request, Subtask $subtask)
     {
-        //
+        $request->request->add(['user_id' => auth()->user()->id]);
+
+        $data = $request->validate([
+            'user_id' => 'required',
+            'task_id' => 'required',
+            'name' => 'required|max:255',
+            'status' => 'required',
+        ]);
+
+        $subtask->update($data);
+
+        //return response()->json($subtask, 200);
     }
 
     /**
@@ -74,6 +85,6 @@ class SubtaskController extends Controller
      */
     public function destroy(Subtask $subtask)
     {
-        //
+        $subtask->delete();
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AppController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubtaskController;
 use App\Http\Controllers\TaskController;
@@ -30,10 +31,12 @@ Route::get('/', function () {
 
 Route::get('/my-tasks', [AppController::class, 'index'])->middleware(['auth', 'verified'])->name('my-tasks');
 
-Route::get('/task/{task}/details', [AppController::class, 'details'])->name('task.details')->middleware(['auth', 'verified']);
+Route::get('/task/{task}/details', [AppController::class, 'detailsTask'])->name('task.details')->middleware(['auth', 'verified']);
+Route::get('/category/{category}/details', [AppController::class, 'detailsCategory'])->name('task.details.category')->middleware(['auth', 'verified']);
 Route::put('/cards/{card}/move', [AppController::class, 'updateStatus'])->name('subtasks.status')->middleware(['auth', 'verified']);
 
 
+Route::resource('categories', CategoryController::class);
 Route::resource('tasks', TaskController::class);
 Route::resource('subtasks', SubtaskController::class);
 

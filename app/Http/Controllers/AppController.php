@@ -11,6 +11,14 @@ use Inertia\Inertia;
 
 class AppController extends Controller
 {
+    public function __construct(LayoutController $layoutController)
+    {
+        $this->middleware(function ($request, $next) use ($layoutController) {
+            $layoutController->shareCommonData();
+            return $next($request);
+        });
+    }
+
     public function index()
     {
         return Inertia::render('App/Index', [
@@ -19,10 +27,17 @@ class AppController extends Controller
         ]);
     }
 
-    public function details($id)
+    public function detailsTask($id)
     {
         return Inertia::render('App/Details', [
             'task' => Task::with('subtasks')->find($id)
+        ]);
+    }
+
+    public function detailsCategory($id)
+    {
+        return Inertia::render('App/DetailsCategory', [
+            'tasks' => Task::with('subtasks', 'category')->where('category_id', $id)->get()
         ]);
     }
 
