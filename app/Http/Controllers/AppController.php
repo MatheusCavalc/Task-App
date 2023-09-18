@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Subtask;
 use App\Models\Task;
 use App\Models\User;
@@ -13,7 +14,8 @@ class AppController extends Controller
     public function index()
     {
         return Inertia::render('App/Index', [
-            'user' => User::with('tasks')->find(auth()->user()->id)
+            'tasks' => Task::with('subtasks', 'category')->where('user_id', auth()->user()->id)->get(),
+            'categories' => Category::where('user_id', auth()->user()->id)->get()
         ]);
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Subtask;
+use App\Models\Task;
 use Illuminate\Http\Request;
 
 class SubtaskController extends Controller
@@ -28,7 +29,20 @@ class SubtaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->request->add(['user_id' => auth()->user()->id]);
+
+        $data = $request->validate([
+            'user_id' => 'required',
+            'task_id' => 'required',
+            'name' => 'required|max:255',
+            'status' => 'required',
+        ]);
+
+        //dd($data);
+
+        $subtask = Subtask::create($data);
+
+        return response()->json($subtask, 200);
     }
 
     /**

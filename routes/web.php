@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SubtaskController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -31,6 +33,9 @@ Route::get('/my-tasks', [AppController::class, 'index'])->middleware(['auth', 'v
 Route::get('/task/{task}/details', [AppController::class, 'details'])->name('task.details')->middleware(['auth', 'verified']);
 Route::put('/cards/{card}/move', [AppController::class, 'updateStatus'])->name('subtasks.status')->middleware(['auth', 'verified']);
 
+
+Route::resource('tasks', TaskController::class);
+Route::resource('subtasks', SubtaskController::class);
 
 
 

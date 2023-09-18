@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TaskController extends Controller
 {
@@ -28,7 +30,17 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->request->add(['user_id' => auth()->user()->id]);
+
+        $data = $request->validate([
+            'user_id' => 'required',
+            'name' => 'required|max:255',
+            'category_id' => 'required',
+            'description' => 'required',
+            'status' => 'required'
+        ]);
+
+        Task::create($data);
     }
 
     /**
@@ -52,7 +64,17 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        //
+        $request->request->add(['user_id' => auth()->user()->id]);
+
+        $data = $request->validate([
+            'user_id' => 'required',
+            'name' => 'required|max:255',
+            'description' => 'required',
+            'status' => 'required',
+            'category_id' => 'required',
+        ]);
+
+        $task->update($data);
     }
 
     /**
@@ -60,6 +82,6 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        $task->delete();
     }
 }

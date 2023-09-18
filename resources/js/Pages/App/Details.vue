@@ -1,8 +1,10 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import CreateSubtask from '@/Components/CreateSubtask.vue';
+import SubtaskItem from '@/Components/SubtaskItem.vue';
 import { Container, Draggable } from "vue3-smooth-dnd";
 import { router } from '@inertiajs/vue3'
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const props = defineProps(['task']);
 
@@ -16,21 +18,23 @@ const aguardandoArray = ref([]);
 const emExecucaoArray = ref([]);
 const concluidaArray = ref([]);
 
-props.task.subtasks.forEach(objeto => {
-    switch (objeto.status) {
-        case 'Aguardando':
-            aguardandoArray.value.push(objeto);
-            break;
-        case 'Em execucao':
-            emExecucaoArray.value.push(objeto);
-            break;
-        case 'Concluida':
-            concluidaArray.value.push(objeto);
-            break;
-        default:
-            break;
-    }
-});
+const loadColumns = (array) => {
+    array.forEach(objeto => {
+        switch (objeto.status) {
+            case 'Aguardando':
+                aguardandoArray.value.push(objeto);
+                break;
+            case 'Em execucao':
+                emExecucaoArray.value.push(objeto);
+                break;
+            case 'Concluida':
+                concluidaArray.value.push(objeto);
+                break;
+            default:
+                break;
+        }
+    });
+}
 
 const cards = ref({
     aguardandoArray: aguardandoArray.value,
@@ -67,17 +71,33 @@ const handleDrop = (lane, dropResult) => {
         router.put(route('subtasks.status', { card: draggingCard.value.cardData.id }), {
             status: lane,
             subtaskId: draggingCard.value.cardData.id
-        }, { showProgress: false });
+        }, { preserveScroll: true });
     }
 
 }
 
 const getChildPayload = (index) => {
-    return {
-        index,
+    return { index }
+}
+
+const loadData = (data) => {
+    switch (data.status) {
+        case 'Aguardando':
+            aguardandoArray.value.push(data);
+            break;
+        case 'Em execucao':
+            emExecucaoArray.value.push(data);
+            break;
+        case 'Concluida':
+            concluidaArray.value.push(data);
+            break;
+        default:
+            // Lida com qualquer outro status, se necessário
+            break;
     }
 }
 
+loadColumns(props.task.subtasks)
 </script>
 
 <template>
@@ -98,11 +118,11 @@ const getChildPayload = (index) => {
                     @drop="handleDrop('aguardandoArray', $event)" :get-child-payload="getChildPayload"
                     :drop-placeholder="{ className: 'placeholder' }">
                     <Draggable v-for="(item, i) in aguardandoArray" :key="item.id">
-                        <div class="p-3 border border-red-400 rounded-lg mb-1">
-                            {{ i + 1 }} -> {{ item.name }}
-                        </div>
+                        <SubtaskItem :index="i" :name="item.name" status="Aguardando" />
                     </Draggable>
                 </Container>
+
+                <CreateSubtask status="Aguardando" :task_id="task.id" @update-column="loadData" />
             </div>
 
             <div>
@@ -114,11 +134,11 @@ const getChildPayload = (index) => {
                     @drop="handleDrop('emExecucaoArray', $event)" :get-child-payload="getChildPayload"
                     :drop-placeholder="{ className: 'placeholder' }">
                     <Draggable v-for="(item, i) in emExecucaoArray" :key="item.id">
-                        <div class="p-3 border border-yellow-400 rounded-lg mb-1">
-                            {{ i + 1 }} -> {{ item.name }}
-                        </div>
+                        <SubtaskItem :index="i" :name="item.name" status="Em execucao" />
                     </Draggable>
                 </Container>
+
+                <CreateSubtask status="Em execucao" :task_id="task.id" @update-column="loadData" />
             </div>
 
             <div>
@@ -130,11 +150,11 @@ const getChildPayload = (index) => {
                     @drop="handleDrop('concluidaArray', $event)" :get-child-payload="getChildPayload"
                     :drop-placeholder="{ className: 'placeholder' }">
                     <Draggable v-for="(item, i) in concluidaArray" :key="item.id">
-                        <div class="p-3 border border-blue-400 rounded-lg mb-1">
-                            {{ i + 1 }} -> {{ item.name }}
-                        </div>
+                        <SubtaskItem :index="i" :name="item.name" status="Concluida" />
                     </Draggable>
                 </Container>
+
+                <CreateSubtask status="Concluida" :task_id="task.id" @update-column="loadData" />
             </div>
         </div>
 
