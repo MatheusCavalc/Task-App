@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TaskStatusEnum;
 use App\Models\Category;
 use App\Models\Subtask;
 use App\Models\Task;
@@ -21,9 +22,13 @@ class AppController extends Controller
 
     public function index()
     {
+        //$status = TaskStatusEnum::Waiting->value;
+        //dd(TaskStatusEnum::cases());
+
         return Inertia::render('App/Index', [
             'tasks' => Task::with('subtasks', 'category')->where('user_id', auth()->user()->id)->get(),
-            'categories' => Category::where('user_id', auth()->user()->id)->get()
+            'categories' => Category::where('user_id', auth()->user()->id)->get(),
+            'task_status' => TaskStatusEnum::cases(),
         ]);
     }
 

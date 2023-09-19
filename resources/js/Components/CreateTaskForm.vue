@@ -2,7 +2,7 @@
 import { reactive } from 'vue'
 import { router } from '@inertiajs/vue3'
 
-const props = defineProps(['categories'])
+const props = defineProps(['categories', 'status'])
 
 const emit = defineEmits(['closeForm']);
 
@@ -52,10 +52,8 @@ function submit() {
             <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Task Status</label>
             <select id="status" v-model="form.status"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option selected>Choose a status</option>
-                <option value="Aguardando">Aguardando</option>
-                <option value="Em execucao">Em execucao</option>
-                <option value="Concluida">Concluida</option>
+                <option selected disabled>Choose a status</option>
+                <option v-for="(status, i) in status" :key="status" :value="status">{{ status }}</option>
             </select>
         </div>
 
@@ -64,7 +62,7 @@ function submit() {
                 Category</label>
             <select id="category_id" v-model="form.category_id"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option selected>Choose a Category</option>
+                <option selected disabled>Choose a Category</option>
                 <option v-for="category in categories" :value="category.id">{{ category.name }}</option>
             </select>
         </div>

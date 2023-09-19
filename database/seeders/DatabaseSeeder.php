@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Enums\TaskStatusEnum;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -34,7 +36,7 @@ class DatabaseSeeder extends Seeder
             'category_id' => 1,
             'name' => 'TODO List Project',
             'description' => 'sdnckadvlakjndvlakjsv sjdvksdnv laksjdv ka sd vbcansckjas',
-            'status' => 'Aguardando', //Em execucao e Concluida
+            'status' => TaskStatusEnum::Waiting->value, //Em execucao e Concluida
         ]);
 
         \App\Models\Subtask::create([
