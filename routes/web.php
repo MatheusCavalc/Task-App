@@ -36,9 +36,9 @@ Route::get('/category/{category}/details', [AppController::class, 'detailsCatego
 Route::put('/cards/{card}/move', [AppController::class, 'updateStatus'])->name('subtasks.status')->middleware(['auth', 'verified']);
 
 
-Route::resource('categories', CategoryController::class);
-Route::resource('tasks', TaskController::class);
-Route::resource('subtasks', SubtaskController::class);
+Route::resource('categories', CategoryController::class)->middleware(['auth', 'verified']);
+Route::resource('tasks', TaskController::class)->middleware(['auth', 'verified']);
+Route::resource('subtasks', SubtaskController::class)->middleware(['auth', 'verified']);
 
 
 

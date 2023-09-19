@@ -23,21 +23,22 @@ class AppController extends Controller
 
     public function index()
     {
-        //$status = TaskStatusEnum::Waiting->value;
-        //dd(TaskStatusEnum::cases());
+        $tasks = Task::with('subtasks', 'category')->where('user_id', auth()->user()->id)->get()->map(function ($task) {
+            $task->formatted_created_at = $task->created_at->format('d M');
+            return $task;
+        });
+        $categories = Category::where('user_id', auth()->user()->id)->get();
+        $task_status = TaskStatusEnum::cases();
 
-        return Inertia::render('App/Index', [
-            'tasks' => Task::with('subtasks', 'category')->where('user_id', auth()->user()->id)->get(),
-            'categories' => Category::where('user_id', auth()->user()->id)->get(),
-            'task_status' => TaskStatusEnum::cases(),
-        ]);
+        return Inertia::render('App/Index', compact('tasks', 'categories', 'task_status'));
     }
 
     public function detailsTask($id)
     {
-        return Inertia::render('App/Details', [
-            'task' => Task::with('subtasks')->find($id)
-        ]);
+        $task = Task::with('subtasks', 'category')->find($id);
+        $created_on = $task->created_at->format('d M');
+
+        return Inertia::render('App/Details', compact('task', 'created_on'));
     }
 
     public function detailsCategory($id)

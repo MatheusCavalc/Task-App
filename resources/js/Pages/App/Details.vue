@@ -1,12 +1,13 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import TaskHeader from '@/Components/TaskHeader.vue';
 import CreateSubtask from '@/Components/CreateSubtask.vue';
 import SubtaskItem from '@/Components/SubtaskItem.vue';
 import { Container, Draggable } from "vue3-smooth-dnd";
 import { router } from '@inertiajs/vue3'
 import { onMounted, ref } from 'vue';
 
-const props = defineProps(['task']);
+const props = defineProps(['task', 'created_on']);
 
 const draggingCard = ref({
     lane: "",
@@ -122,16 +123,12 @@ loadColumns(props.task.subtasks)
 
 <template>
     <AppLayout>
-        <div>
-            <p class="text-3xl">
-                {{ task.name }}
-            </p>
-        </div>
+        <TaskHeader :task="task" :created="created_on"/>
 
-        <div class="mt-20 grid grid-cols-3 gap-2">
-            <div>
-                <div class="flex justify-center mb-2">
-                    <p class="font bold text-xl">Waiting</p>
+        <div class="mt-10 grid grid-cols-3 gap-2 items-start">
+            <div class="border p-3 rounded-lg border-red-400">
+                <div class="flex justify-start mb-2">
+                    <p class="font bold text-lg">Waiting</p>
                 </div>
 
                 <Container group-name="subtasks" @drag-start="handleDragStart('waitingArray', $event)"
@@ -146,9 +143,9 @@ loadColumns(props.task.subtasks)
                 <CreateSubtask status="Waiting" :task_id="task.id" @update-column="loadData" />
             </div>
 
-            <div>
-                <div class="flex justify-center mb-2">
-                    <p class="font bold text-xl">In Progress</p>
+            <div class="border p-3 rounded-lg border-yellow-400">
+                <div class="flex justify-start mb-2">
+                    <p class="font bold text-lg">In Progress</p>
                 </div>
 
                 <Container group-name="subtasks" @drag-start="handleDragStart('inProgressArray', $event)"
@@ -163,9 +160,9 @@ loadColumns(props.task.subtasks)
                 <CreateSubtask status="In Progress" :task_id="task.id" @update-column="loadData" />
             </div>
 
-            <div>
-                <div class="flex justify-center mb-2">
-                    <p class="font bold text-xl">Finished</p>
+            <div class="border p-3 rounded-lg border-blue-400">
+                <div class="flex justify-start mb-2">
+                    <p class="font bold text-lg">Finished</p>
                 </div>
 
                 <Container group-name="subtasks" @drag-start="handleDragStart('finishedArray', $event)"
@@ -184,7 +181,7 @@ loadColumns(props.task.subtasks)
     </AppLayout>
 </template>
 
-<style scoped>
+<style>
 .placeholder {
     background: rgba(33, 33, 33, 0.08);
     border-radius: 0.4rem;

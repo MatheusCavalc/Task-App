@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('subtasks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('task_id')->constrained(); // Adicione esta linha
+            $table->foreignId('task_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('status');
             $table->timestamps();

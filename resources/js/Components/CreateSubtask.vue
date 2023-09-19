@@ -18,12 +18,17 @@ const form = reactive({
 })
 
 function submit() {
+    if (form.status === null) {
+        form.status = props.status;
+        form.task_id = props.task_id
+    }
+
     axios.post('/subtasks', form).then((response) => {
         emit('updateColumn', response.data);
     })
 
     form.name = null
-    form.task = null
+    form.task_id = null
     form.status = null
 
     create.value = false
@@ -32,7 +37,7 @@ function submit() {
 
 <template>
     <div v-show="!create" @click="create = true"
-        class="p-3 border border-gray-400 rounded-lg mb-1 flex gap-2 text-gray-400 cursor-pointer">
+        class="p-3 rounded-lg mb-1 flex gap-2 text-gray-400 cursor-pointer">
         <p>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                 class="w-5 h-5 mt-0.5">

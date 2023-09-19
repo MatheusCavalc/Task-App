@@ -21,7 +21,11 @@ import { Link } from '@inertiajs/vue3';
         <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
 
             <div>
-                <p class="text-3xl ml-3">Tasks</p>
+                <p class="text-2xl">
+                    <Link href="/my-tasks">
+                    Tasks App
+                    </Link>
+                </p>
             </div>
 
             <div class="mt-5">
@@ -49,7 +53,7 @@ import { Link } from '@inertiajs/vue3';
             <div class="mt-5">
                 <ul class="space-y-2 font-medium border-t border-gray-200">
                     <Link :href="route('categories.index')">
-                        <p class="font-bold mt-5">CATEGORIES</p>
+                    <p class="font-bold mt-5">CATEGORIES</p>
                     </Link>
                     <li v-for="category in this.$page.props.userData.categories" :key="category.id">
                         <Link :href="route('task.details.category', category.id)"
@@ -93,7 +97,22 @@ import { Link } from '@inertiajs/vue3';
                     </a>
                 </li>
             </ul>
+
+            <Link :href="route('logout')" method="post">
+            <div class="fixed bottom-8 left-4 flex items-center font-medium group">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor"
+                    class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+                </svg>
+
+                <p class="ml-2">Sign Out</p>
+            </div>
+            </Link>
         </div>
+
+
     </aside>
 
     <div class="p-4 sm:ml-64">

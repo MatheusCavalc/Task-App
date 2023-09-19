@@ -27,11 +27,6 @@ function submit() {
 </script>
 
 <template>
-    <div class="flex items-center justify-start">
-        <h3 class="text-2xl font-medium text-gray-700">Create Task</h3>
-    </div>
-    <hr class="my-3">
-
     <form @submit.prevent="submit">
         <div class="mb-6">
             <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Task Name</label>

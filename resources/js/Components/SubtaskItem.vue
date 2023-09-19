@@ -52,9 +52,9 @@ function deleteTask() {
 </script>
 
 <template>
-    <div :class="classes" v-if="!edit">
+    <div :class="classes" v-if="!edit" @dblclick="edit = true">
         <p>
-            {{ index + 1 }} -> {{ item.name }}
+            {{ item.name }}
         </p>
 
         <button @click="edit = true">
