@@ -14,21 +14,21 @@ const draggingCard = ref({
     cardData: {}
 });
 
-const aguardandoArray = ref([]);
-const emExecucaoArray = ref([]);
-const concluidaArray = ref([]);
+const waitingArray = ref([]);
+const inProgressArray = ref([]);
+const finishedArray = ref([]);
 
 const loadColumns = (array) => {
     array.forEach(objeto => {
         switch (objeto.status) {
-            case 'Aguardando':
-                aguardandoArray.value.push(objeto);
+            case 'Waiting':
+                waitingArray.value.push(objeto);
                 break;
-            case 'Em execucao':
-                emExecucaoArray.value.push(objeto);
+            case 'In Progress':
+                inProgressArray.value.push(objeto);
                 break;
-            case 'Concluida':
-                concluidaArray.value.push(objeto);
+            case 'Finished':
+                finishedArray.value.push(objeto);
                 break;
             default:
                 break;
@@ -37,9 +37,9 @@ const loadColumns = (array) => {
 }
 
 const cards = ref({
-    aguardandoArray: aguardandoArray.value,
-    emExecucaoArray: emExecucaoArray.value,
-    concluidaArray: concluidaArray.value,
+    waitingArray: waitingArray.value,
+    inProgressArray: inProgressArray.value,
+    finishedArray: finishedArray.value,
 });
 
 const handleDragStart = (lane, dragResult) => {
@@ -82,14 +82,14 @@ const getChildPayload = (index) => {
 
 const loadData = (data) => {
     switch (data.status) {
-        case 'Aguardando':
-            aguardandoArray.value.push(data);
+        case 'Waiting':
+            waitingArray.value.push(data);
             break;
-        case 'Em execucao':
-            emExecucaoArray.value.push(data);
+        case 'In Progress':
+            inProgressArray.value.push(data);
             break;
-        case 'Concluida':
-            concluidaArray.value.push(data);
+        case 'Finished':
+            finishedArray.value.push(data);
             break;
         default:
             // Lida com qualquer outro status, se necessário
@@ -98,22 +98,22 @@ const loadData = (data) => {
 }
 
 const editSubtask = (data) => {
-    if (data.array == 'aguardandoArray') {
-        aguardandoArray.value[data.index].name = data.name
-    } else if (data.array == 'emExecucaoArray') {
-        emExecucaoArray.value[data.index].name = data.name
+    if (data.array == 'waitingArray') {
+        waitingArray.value[data.index].name = data.name
+    } else if (data.array == 'inProgressArray') {
+        inProgressArray.value[data.index].name = data.name
     } else {
-        concluidaArray.value[data.index].name = data.name
+        finishedArray.value[data.index].name = data.name
     }
 }
 
 const removeSubtask = (data) => {
-    if (data.array == 'aguardandoArray') {
-        aguardandoArray.value.splice(data.index, 1)
-    } else if (data.array == 'emExecucaoArray') {
-        emExecucaoArray.value.splice(data.index, 1)
+    if (data.array == 'waitingArray') {
+        waitingArray.value.splice(data.index, 1)
+    } else if (data.array == 'inProgressArray') {
+        inProgressArray.value.splice(data.index, 1)
     } else {
-        concluidaArray.value.splice(data.index, 1)
+        finishedArray.value.splice(data.index, 1)
     }
 }
 
@@ -131,53 +131,53 @@ loadColumns(props.task.subtasks)
         <div class="mt-20 grid grid-cols-3 gap-2">
             <div>
                 <div class="flex justify-center mb-2">
-                    <p class="font bold text-xl">Aguardando</p>
+                    <p class="font bold text-xl">Waiting</p>
                 </div>
 
-                <Container group-name="subtasks" @drag-start="handleDragStart('aguardandoArray', $event)"
-                    @drop="handleDrop('aguardandoArray', $event)" :get-child-payload="getChildPayload"
+                <Container group-name="subtasks" @drag-start="handleDragStart('waitingArray', $event)"
+                    @drop="handleDrop('waitingArray', $event)" :get-child-payload="getChildPayload"
                     :drop-placeholder="{ className: 'placeholder' }">
-                    <Draggable v-for="(item, i) in aguardandoArray" :key="item.id">
-                        <SubtaskItem :index="i" :item="item" status="Aguardando" array="aguardandoArray"
+                    <Draggable v-for="(item, i) in waitingArray" :key="item.id">
+                        <SubtaskItem :index="i" :item="item" status="Waiting" array="waitingArray"
                             @edit-subtask="editSubtask" @delete-subtask="removeSubtask" />
                     </Draggable>
                 </Container>
 
-                <CreateSubtask status="Aguardando" :task_id="task.id" @update-column="loadData" />
+                <CreateSubtask status="Waiting" :task_id="task.id" @update-column="loadData" />
             </div>
 
             <div>
                 <div class="flex justify-center mb-2">
-                    <p class="font bold text-xl">Em Execucao</p>
+                    <p class="font bold text-xl">In Progress</p>
                 </div>
 
-                <Container group-name="subtasks" @drag-start="handleDragStart('emExecucaoArray', $event)"
-                    @drop="handleDrop('emExecucaoArray', $event)" :get-child-payload="getChildPayload"
+                <Container group-name="subtasks" @drag-start="handleDragStart('inProgressArray', $event)"
+                    @drop="handleDrop('inProgressArray', $event)" :get-child-payload="getChildPayload"
                     :drop-placeholder="{ className: 'placeholder' }">
-                    <Draggable v-for="(item, i) in emExecucaoArray" :key="item.id">
-                        <SubtaskItem :index="i" :item="item" status="Em execucao" array="emExecucaoArray"
+                    <Draggable v-for="(item, i) in inProgressArray" :key="item.id">
+                        <SubtaskItem :index="i" :item="item" status="In Progress" array="inProgressArray"
                             @edit-subtask="editSubtask" @delete-subtask="removeSubtask" />
                     </Draggable>
                 </Container>
 
-                <CreateSubtask status="Em execucao" :task_id="task.id" @update-column="loadData" />
+                <CreateSubtask status="In Progress" :task_id="task.id" @update-column="loadData" />
             </div>
 
             <div>
                 <div class="flex justify-center mb-2">
-                    <p class="font bold text-xl">Concluida</p>
+                    <p class="font bold text-xl">Finished</p>
                 </div>
 
-                <Container group-name="subtasks" @drag-start="handleDragStart('concluidaArray', $event)"
-                    @drop="handleDrop('concluidaArray', $event)" :get-child-payload="getChildPayload"
+                <Container group-name="subtasks" @drag-start="handleDragStart('finishedArray', $event)"
+                    @drop="handleDrop('finishedArray', $event)" :get-child-payload="getChildPayload"
                     :drop-placeholder="{ className: 'placeholder' }">
-                    <Draggable v-for="(item, i) in concluidaArray" :key="item.id">
-                        <SubtaskItem :index="i" :item="item" status="Concluida" array="concluidaArray"
+                    <Draggable v-for="(item, i) in finishedArray" :key="item.id">
+                        <SubtaskItem :index="i" :item="item" status="Finished" array="finishedArray"
                             @edit-subtask="editSubtask" @delete-subtask="removeSubtask" />
                     </Draggable>
                 </Container>
 
-                <CreateSubtask status="Concluida" :task_id="task.id" @update-column="loadData" />
+                <CreateSubtask status="Finished" :task_id="task.id" @update-column="loadData" />
             </div>
         </div>
 

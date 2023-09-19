@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\SubtaskStatusEnum;
 use App\Enums\TaskStatusEnum;
 use App\Models\Category;
 use App\Models\Subtask;
@@ -54,11 +55,11 @@ class AppController extends Controller
         ]);
 
         $options = [
-            'emExecucaoArray' => 'Em execucao',
-            'aguardandoArray' => 'Aguardando',
+            'inProgressArray' => SubtaskStatusEnum::In_Progress->value,
+            'waitingArray' => SubtaskStatusEnum::Waiting->value,
         ];
 
-        $status = $options[$request->status] ?? 'Concluida';
+        $status = $options[$request->status] ?? SubtaskStatusEnum::Finished->value;
 
         Subtask::where('id', $request->subtaskId)->update(['status' => $status]);
     }

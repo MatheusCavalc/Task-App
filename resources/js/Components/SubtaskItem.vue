@@ -9,9 +9,9 @@ const props = defineProps(['index', 'item', 'status', 'array'])
 const emit = defineEmits(['editSubtask', 'deleteSubtask']);
 
 const statusClasses = {
-    'Aguardando': 'p-3 border border-red-400 rounded-lg mb-1 flex justify-between',
-    'Em execucao': 'p-3 border border-yellow-400 rounded-lg mb-1 flex justify-between',
-    'Concluida': 'p-3 border border-blue-400 rounded-lg mb-1 flex justify-between',
+    'Waiting': 'p-3 border border-red-400 rounded-lg mb-1 flex justify-between',
+    'In Progress': 'p-3 border border-yellow-400 rounded-lg mb-1 flex justify-between',
+    'Finished': 'p-3 border border-blue-400 rounded-lg mb-1 flex justify-between',
 };
 
 const classes = ref(statusClasses[props.status] || '');
