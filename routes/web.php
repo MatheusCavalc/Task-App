@@ -20,16 +20,9 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::get('/', [AppController::class, 'index']);
 
-Route::get('/my-tasks', [AppController::class, 'index'])->middleware(['auth', 'verified'])->name('my-tasks');
+Route::get('/my-tasks', [AppController::class, 'myTasks'])->middleware(['auth', 'verified'])->name('my-tasks');
 
 Route::get('/task/{task}/details', [AppController::class, 'detailsTask'])->name('task.details')->middleware(['auth', 'verified']);
 Route::get('/category/{category}/details', [AppController::class, 'detailsCategory'])->name('task.details.category')->middleware(['auth', 'verified']);

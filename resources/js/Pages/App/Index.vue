@@ -1,141 +1,66 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
-import CreateTaskForm from '@/Components/CreateTaskForm.vue';
-import EditTaskForm from '@/Components/EditTaskForm.vue'
+import HomeLayout from '@/Layouts/HomeLayout.vue'
 import { Link } from '@inertiajs/vue3';
-import { ref } from 'vue';
 
-const props = defineProps(['tasks', 'categories', 'task_status']);
-
-const showModal = ref(false)
-const createTask = ref(false)
-const editTask = ref(false)
-const taskToEdit = ref([])
-
-const openCreateForm = () => {
-    showModal.value = true
-    createTask.value = true
-    editTask.value = false
-}
-
-const openEditForm = (task) => {
-    if (editTask.value == true) {
-        editTask.value == false
-
-        showModal.value = true
-        createTask.value = false
-        editTask.value = true
-        taskToEdit.value = task
-    } else {
-        showModal.value = true
-        createTask.value = false
-        editTask.value = true
-        taskToEdit.value = task
-    }
-}
-
-const closeModal = () => {
-    showModal.value = false
-    createTask.value = false
-    editTask.value = false
-    taskToEdit.value = []
-}
+defineProps(['image', 'image2'])
 
 </script>
 
 <template>
-    <AppLayout>
-        <div>
-            <p class="text-3xl">
-                My Tasks
-            </p>
-        </div>
+    <HomeLayout>
 
-        <div @click="openCreateForm" class="mt-2 flex group gap-2 cursor-pointer p-3 border border-gray-200 hover:bg-black max-w-md rounded">
-            <p>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-5 h-5 mt-0.5 group-hover:stroke-white">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-            </p>
-            <p class="text-md group-hover:text-white">Create New Task</p>
-        </div>
+        <div class="relative grid grid-cols-1 mx-auto text-white max-w-7xl gap-x-16 lg:grid-cols-2 lg:px-8 lg:pt-24">
+            <div class="mt-28">
+                <p class="text-5xl">
+                    Tasks App brings together tasks, teammates, and tools
+                </p>
 
-        <div class="mt-3">
-            <div v-for="task in tasks" :key="task.id" class="mb-3">
-                <div
-                    class="relative group block max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow hover:bg-black hove:text-white">
-                    <Link :href="route('task.details', task.id)" class="">
-                    <div class="relative">
-                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 group-hover:text-white">{{ task.name }}
-                        </h5>
-                        <p class="font-normal text-gray-700 group-hover:text-white my-2">{{ task.description }}</p>
-                    </div>
+                <p class="mt-5 text-2xl">
+                    Keep everything in one place, even if the team is distributed.
+                </p>
 
-                    <div class="flex gap-4 mt-2">
-                        <p class="group-hover:text-white">{{ task.formatted_created_at }}</p><!-- task.created_at -->
-                        <p class="text-gray-500 group-hover:text-white">|</p>
-                        <p class="group-hover:text-white"><span class="px-3 bg-gray-200 rounded group-hover:bg-white group-hover:text-black">{{ (task.subtasks).length }}</span> Subtasks</p>
-                        <p class="text-gray-500 group-hover:text-white">|</p>
-                        <p class="group-hover:text-white">{{ task.category.name }}</p>
-                        <p class="text-gray-500 group-hover:text-white">|</p>
-                        <p class="group-hover:text-white">{{ task.status }}</p>
-                    </div>
-                    </Link>
-
-                    <div class="absolute top-5 right-4">
-                        <button @click="openEditForm(task)">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="w-5 h-5 group-hover:stroke-white">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
+                <p class="mt-5">
+                    <Link :href="route('login')"
+                        class="px-8 py-3 font-semibold text-black bg-white rounded-lg hover:text-gray-900 dark:hover:text-white">
+                    Sign In</Link>
+                </p>
             </div>
-        </div>
 
-        <div :class="createTask ? 'translate-x-0 ease-out' : 'translate-x-full ease-in'"
-            class="fixed right-0 top-0 max-w-md w-full h-full px-6 py-4 transition duration-300 transform overflow-y-auto bg-white border-l-2 border-gray-300">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center justify-start">
-                    <h3 class="text-2xl font-medium text-gray-700">Create Task</h3>
-                </div>
-
-                <button @click="closeModal" class="text-gray-600 focus:outline-none">
-                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path d="M6 18L18 6M6 6l12 12"></path>
+            <div class="mt-20 mx-36">
+                <div class="flex justify-end">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-24 h-24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
                     </svg>
-                </button>
-            </div>
-            <hr class="my-3">
-
-            <CreateTaskForm :categories="categories" :status="task_status" @close-form="closeModal" />
-
-        </div>
-
-        <div :class="editTask ? 'translate-x-0 ease-out' : 'translate-x-full ease-in'"
-            class="fixed right-0 top-0 max-w-md w-full h-full px-6 py-4 transition duration-300 transform overflow-y-auto bg-white border-l-2 border-gray-300">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center justify-start">
-                    <h3 class="text-2xl font-medium text-gray-700">Edit Task</h3>
                 </div>
 
-                <button @click="closeModal" class="text-gray-600 focus:outline-none">
-                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path d="M6 18L18 6M6 6l12 12"></path>
+                <div class="flex justify-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-24 h-24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0118 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3l1.5 1.5 3-3.75" />
                     </svg>
-                </button>
-            </div>
-            <hr class="my-3">
+                </div>
 
-            <div v-if="editTask">
-                <EditTaskForm :task="taskToEdit" :categories="categories" :status="task_status" @close-form="closeModal" />
+                <div class="flex justify-end">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-24 h-24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5A3.375 3.375 0 006.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0015 2.25h-1.5a2.251 2.251 0 00-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 00-9-9z" />
+                    </svg>
+                </div>
+
+                <div class="flex justify-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-24 h-24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
+                    </svg>
+                </div>
+
             </div>
         </div>
 
-    </AppLayout>
+    </HomeLayout>
 </template>

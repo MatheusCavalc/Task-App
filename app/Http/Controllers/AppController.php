@@ -23,6 +23,11 @@ class AppController extends Controller
 
     public function index()
     {
+        return Inertia::render('App/Index');
+    }
+
+    public function myTasks()
+    {
         $tasks = Task::with('subtasks', 'category')->where('user_id', auth()->user()->id)->get()->map(function ($task) {
             $task->formatted_created_at = $task->created_at->format('d M');
             return $task;
@@ -30,7 +35,7 @@ class AppController extends Controller
         $categories = Category::where('user_id', auth()->user()->id)->get();
         $task_status = TaskStatusEnum::cases();
 
-        return Inertia::render('App/Index', compact('tasks', 'categories', 'task_status'));
+        return Inertia::render('App/MyTasks', compact('tasks', 'categories', 'task_status'));
     }
 
     public function detailsTask($id)
