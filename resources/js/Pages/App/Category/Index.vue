@@ -29,7 +29,7 @@ const props = defineProps(['categories'])
                     </Link>
 
                     <div v-for="category in categories" :key="category.id"
-                        class="mt-2 flex gap-2 cursor-pointer p-3 border-b border-gray-200 max-w-sm rounded flex justify-between">
+                        class="mt-2 flex gap-2 cursor-pointer p-3 border-b border-gray-200 max-w-sm rounded justify-between">
                         <Link :href="route('task.details.category', category.id)">
                         <p>{{ category.name }}</p>
                         </Link>

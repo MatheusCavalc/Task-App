@@ -69,7 +69,7 @@ function deleteTask() {
     <div v-if="edit" class="">
         <form @submit.prevent="submit">
             <div class="mb-1 flex">
-                <input type="text" id="name" placeholder="New Subtask" v-model="form.name"
+                <input type="text" id="name" placeholder="New Subtask" v-model="form.name" required
                     class="bg-gray-50 border border-gray-400 text-gray-900 rounded-l-lg border-r-0 w-full p-3">
                 <span @click="edit = false"
                     class="cursor-pointer inline-flex items-center px-3 text-gray-900 bg-gray-50 border border-l-0 border-gray-400 rounded-r-0 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
