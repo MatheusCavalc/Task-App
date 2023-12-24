@@ -7,7 +7,7 @@ const props = defineProps(['categories'])
 
 <template>
     <AppLayout>
-        <div class="">
+        <div class="p-4">
             <div class="">
                 <div class="">
 

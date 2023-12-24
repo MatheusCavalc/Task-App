@@ -123,61 +123,63 @@ loadColumns(props.task.subtasks)
 
 <template>
     <AppLayout>
-        <TaskHeader :task="task" :created="created_on"/>
+        <section class="lg:p-4">
+            <TaskHeader :task="task" :created="created_on" />
 
-        <div class="mt-10 grid grid-cols-3 gap-2 items-start">
-            <div class="border p-3 rounded-lg border-red-400">
-                <div class="flex justify-start mb-2">
-                    <p class="font bold text-lg">Waiting</p>
+            <div
+                class="mt-10 flex gap-3 lg:grid lg:grid-cols-3 lg:gap-2 items-start overflow-x-auto pb-20 lg:pb-5 px-3 lg:px-0">
+                <div class="border p-3 rounded-lg border-red-400 w-64 flex-shrink-0 lg:w-full">
+                    <div class="flex justify-start mb-2">
+                        <p class="font bold text-lg">Waiting</p>
+                    </div>
+
+                    <Container group-name="subtasks" @drag-start="handleDragStart('waitingArray', $event)"
+                        @drop="handleDrop('waitingArray', $event)" :get-child-payload="getChildPayload"
+                        :drop-placeholder="{ className: 'placeholder' }">
+                        <Draggable v-for="(item, i) in waitingArray" :key="item.id" class="cursor-move">
+                            <SubtaskItem :index="i" :item="item" status="Waiting" array="waitingArray"
+                                @edit-subtask="editSubtask" @delete-subtask="removeSubtask" />
+                        </Draggable>
+                    </Container>
+
+                    <CreateSubtask status="Waiting" :task_id="task.id" @update-column="loadData" />
                 </div>
 
-                <Container group-name="subtasks" @drag-start="handleDragStart('waitingArray', $event)"
-                    @drop="handleDrop('waitingArray', $event)" :get-child-payload="getChildPayload"
-                    :drop-placeholder="{ className: 'placeholder' }">
-                    <Draggable v-for="(item, i) in waitingArray" :key="item.id">
-                        <SubtaskItem :index="i" :item="item" status="Waiting" array="waitingArray"
-                            @edit-subtask="editSubtask" @delete-subtask="removeSubtask" />
-                    </Draggable>
-                </Container>
+                <div class="border p-3 rounded-lg border-yellow-400 w-64 flex-shrink-0 lg:w-full">
+                    <div class="flex justify-start mb-2">
+                        <p class="font bold text-lg">In Progress</p>
+                    </div>
 
-                <CreateSubtask status="Waiting" :task_id="task.id" @update-column="loadData" />
-            </div>
+                    <Container group-name="subtasks" @drag-start="handleDragStart('inProgressArray', $event)"
+                        @drop="handleDrop('inProgressArray', $event)" :get-child-payload="getChildPayload"
+                        :drop-placeholder="{ className: 'placeholder' }">
+                        <Draggable v-for="(item, i) in inProgressArray" :key="item.id" class="cursor-move">
+                            <SubtaskItem :index="i" :item="item" status="In Progress" array="inProgressArray"
+                                @edit-subtask="editSubtask" @delete-subtask="removeSubtask" />
+                        </Draggable>
+                    </Container>
 
-            <div class="border p-3 rounded-lg border-yellow-400">
-                <div class="flex justify-start mb-2">
-                    <p class="font bold text-lg">In Progress</p>
+                    <CreateSubtask status="In Progress" :task_id="task.id" @update-column="loadData" />
                 </div>
 
-                <Container group-name="subtasks" @drag-start="handleDragStart('inProgressArray', $event)"
-                    @drop="handleDrop('inProgressArray', $event)" :get-child-payload="getChildPayload"
-                    :drop-placeholder="{ className: 'placeholder' }">
-                    <Draggable v-for="(item, i) in inProgressArray" :key="item.id">
-                        <SubtaskItem :index="i" :item="item" status="In Progress" array="inProgressArray"
-                            @edit-subtask="editSubtask" @delete-subtask="removeSubtask" />
-                    </Draggable>
-                </Container>
+                <div class="border p-3 rounded-lg border-blue-400 w-64 flex-shrink-0 lg:w-full">
+                    <div class="flex justify-start mb-2">
+                        <p class="font bold text-lg">Finished</p>
+                    </div>
 
-                <CreateSubtask status="In Progress" :task_id="task.id" @update-column="loadData" />
-            </div>
+                    <Container group-name="subtasks" @drag-start="handleDragStart('finishedArray', $event)"
+                        @drop="handleDrop('finishedArray', $event)" :get-child-payload="getChildPayload"
+                        :drop-placeholder="{ className: 'placeholder' }">
+                        <Draggable v-for="(item, i) in finishedArray" :key="item.id" class="cursor-move">
+                            <SubtaskItem :index="i" :item="item" status="Finished" array="finishedArray"
+                                @edit-subtask="editSubtask" @delete-subtask="removeSubtask" />
+                        </Draggable>
+                    </Container>
 
-            <div class="border p-3 rounded-lg border-blue-400">
-                <div class="flex justify-start mb-2">
-                    <p class="font bold text-lg">Finished</p>
+                    <CreateSubtask status="Finished" :task_id="task.id" @update-column="loadData" />
                 </div>
-
-                <Container group-name="subtasks" @drag-start="handleDragStart('finishedArray', $event)"
-                    @drop="handleDrop('finishedArray', $event)" :get-child-payload="getChildPayload"
-                    :drop-placeholder="{ className: 'placeholder' }">
-                    <Draggable v-for="(item, i) in finishedArray" :key="item.id">
-                        <SubtaskItem :index="i" :item="item" status="Finished" array="finishedArray"
-                            @edit-subtask="editSubtask" @delete-subtask="removeSubtask" />
-                    </Draggable>
-                </Container>
-
-                <CreateSubtask status="Finished" :task_id="task.id" @update-column="loadData" />
             </div>
-        </div>
-
+        </section>
     </AppLayout>
 </template>
 

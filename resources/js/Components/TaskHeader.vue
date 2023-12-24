@@ -3,7 +3,7 @@ defineProps(['task', 'created'])
 </script>
 
 <template>
-    <div>
+    <div class="p-4 lg:p-0">
         <p class="text-3xl">
             {{ task.name }}
         </p>
