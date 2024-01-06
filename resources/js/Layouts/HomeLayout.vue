@@ -1,30 +1,36 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
+let menu = ref(false)
+
+const showMenu = () => {
+    menu.value = !menu.value
+}
 </script>
 
 <template>
-    <nav class="fixed top-0 left-0 z-20 w-full bg-black border-b border-gray-200 dark:bg-gray-900 dark:border-gray-600">
+    <nav class="fixed top-0 left-0 z-20 w-full bg-black border-b border-gray-200">
         <div class="flex flex-wrap items-center justify-between max-w-screen-xl p-4 mx-auto">
             <a href="https://flowbite.com/" class="flex items-center">
-                <span class="self-center text-2xl font-semibold text-white whitespace-nowrap">Tasks App</span>
+                <span class="self-center text-xl font-semibold text-white lg:text-2xl whitespace-nowrap">Tasks App</span>
             </a>
-            <div class="flex md:order-2">
+            <div class="flex gap-2 md:order-2">
                 <Link v-if="$page.props.auth.user" :href="route('my-tasks')"
-                    class="px-4 py-2 font-semibold text-black bg-white rounded-lg hover:text-gray-900 dark:hover:text-white">
+                    class="hidden px-4 py-2 font-semibold text-black bg-white rounded-lg lg:block hover:text-gray-900">
                 My Tasks</Link>
 
                 <template v-else>
                     <Link :href="route('login')"
-                        class="px-4 py-2 font-semibold text-black bg-white rounded-lg hover:text-gray-900 dark:hover:text-white">
+                        class="hidden px-4 py-2 font-semibold text-black bg-white rounded-lg lg:block hover:text-gray-900">
                     Log in</Link>
 
                     <Link :href="route('register')"
-                        class="px-4 py-2 ml-4 font-semibold text-black bg-white rounded-lg hover:text-gray-900 dark:hover:text-white">
+                        class="hidden px-4 py-2 font-semibold text-black bg-white rounded-lg lg:block hover:text-gray-900">
                     Register</Link>
                 </template>
-                <button data-collapse-toggle="navbar-sticky" type="button"
-                    class="inline-flex items-center justify-center w-10 h-10 p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                <button @click="showMenu" data-collapse-toggle="navbar-sticky" type="button"
+                    class="inline-flex items-center justify-center w-10 h-10 p-2 text-sm text-gray-500 rounded-lg md:hidden"
                     aria-controls="navbar-sticky" aria-expanded="false">
                     <span class="sr-only">Open main menu</span>
                     <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -34,26 +40,44 @@ import { Link } from '@inertiajs/vue3';
                     </svg>
                 </button>
             </div>
-            <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
+            <div :class="{ 'md:block': menu, 'hidden md:block': !menu }" class="w-full md:w-auto" id="navbar-sticky">
                 <ul
-                    class="flex flex-col p-4 mt-4 font-medium border border-gray-100 rounded-lg md:p-0 md:flex-row md:space-x-8 md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                    class="flex flex-col p-4 mt-4 font-medium border border-gray-100 rounded-lg md:p-0 md:flex-row md:space-x-8 md:mt-0 md:border-0">
                     <li>
                         <a href="#"
-                            class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
+                            class="block py-2 pl-3 pr-4 text-white rounded md:bg-transparent md:text-blue-700 md:p-0"
                             aria-current="page">Home</a>
                     </li>
                     <li>
                         <a href="#"
-                            class="block py-2 pl-3 pr-4 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Upgrade to Pro</a>
+                            class="block py-2 pl-3 pr-4 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:p-0">Upgrade
+                            to Pro</a>
                     </li>
                     <li>
                         <a href="#"
-                            class="block py-2 pl-3 pr-4 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Services</a>
+                            class="block py-2 pl-3 pr-4 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:p-0">Services</a>
                     </li>
                     <li>
                         <a href="#"
-                            class="block py-2 pl-3 pr-4 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Functions</a>
+                            class="block py-2 pl-3 pr-4 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:p-0">Functions</a>
                     </li>
+                    <li v-if="$page.props.auth.user" class="lg:hidden">
+                        <Link :href="route('my-tasks')"
+                            class="block py-2 pl-3 pr-4 text-black bg-white rounded-md md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500">
+                        My Tasks</Link>
+                    </li>
+                    <template v-else>
+                        <li class="mt-2 lg:hidden">
+                            <Link :href="route('login')"
+                                class="block py-2 pl-3 pr-4 text-black bg-white rounded-md md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500">
+                            Log in</Link>
+                        </li>
+                        <li class="mt-2 lg:hidden">
+                            <Link :href="route('register')"
+                                class="block py-2 pl-3 pr-4 text-black bg-white rounded-md md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500">
+                            Register</Link>
+                        </li>
+                    </template>
                 </ul>
             </div>
         </div>
