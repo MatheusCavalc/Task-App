@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\TaskUpdate;
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
@@ -40,7 +41,14 @@ Route::resource('subtasks', SubtaskController::class)->middleware(['auth', 'veri
 
 
 
+Route::get('/event', function() {
+    event(new TaskUpdate('First Broadcast'));
+});
 
+Route::get('/listen', function() {
+    //return view('listen');
+    return Inertia::render('App/Index');
+});
 
 
 

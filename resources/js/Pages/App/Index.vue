@@ -1,9 +1,17 @@
 <script setup>
 import HomeLayout from '@/Layouts/HomeLayout.vue'
 import { Link } from '@inertiajs/vue3';
+import { onMounted } from 'vue';
 
 defineProps(['image', 'image2'])
 
+onMounted(() => {
+    window.Echo.channel('update')
+        .listen('TaskUpdate', (e) => {
+            alert('Functional')
+        });
+}
+);
 </script>
 
 <template>
