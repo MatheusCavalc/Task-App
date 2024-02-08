@@ -35,14 +35,14 @@ Route::resource('tasks', TaskController::class)->middleware(['auth', 'verified']
 Route::resource('subtasks', SubtaskController::class)->middleware(['auth', 'verified']);
 
 
-
-
+Route::get('/task/{task}/admin', [AppController::class, 'adminTask'])->name('task.admin')->middleware(['auth', 'verified']);
+Route::post('/task/new-admin', [TaskController::class, 'addAdmin'])->name('add.admin')->middleware(['auth', 'verified']);
 
 
 
 
 Route::get('/event', function() {
-    event(new TaskUpdate('First Broadcast'));
+    //event(new TaskUpdate('First Broadcast'));
 });
 
 Route::get('/listen', function() {

@@ -22,7 +22,7 @@ class CategoryController extends Controller
     public function index()
     {
         return Inertia::render('App/Category/Index', [
-            'categories' => Category::all()
+            'categories' => Category::where('user_id', auth()->user()->id)->get()
         ]);
     }
 

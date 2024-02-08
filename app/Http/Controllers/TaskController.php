@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Task;
+use App\Models\TaskUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -83,5 +85,26 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         $task->delete();
+    }
+
+    public function addAdmin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|exists:users,email',
+            'task' => 'required|exists:tasks,id',
+        ]);
+
+        $task = Task::where('id', $request->task)->first();
+
+        if ($task->user_id == auth()->user()->id) {
+            $user = User::where('email', $request->email)->first();
+
+            TaskUser::updateOrCreate([
+                'task_id' => $request->task,
+                'user_id' => $user->id
+            ]);
+
+            return to_route('task.details', $request->task);
+        }
     }
 }

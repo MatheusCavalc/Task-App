@@ -36,7 +36,7 @@ const menu = ref(false)
                     TASKS
                     </Link>
                 </p>
-                <ul class="space-y-2 font-medium">
+                <ul class="space-y-1 font-medium">
                     <li v-for="task in this.$page.props.userData.tasks" :key="task.id">
                         <Link :href="route('task.details', task.id)"
                             class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -53,7 +53,7 @@ const menu = ref(false)
             </div>
 
             <div class="mt-5">
-                <ul class="space-y-2 font-medium border-t border-gray-200">
+                <ul class="space-y-1 font-medium border-t border-gray-200">
                     <Link :href="route('categories.index')">
                     <p class="font-bold mt-5">CATEGORIES</p>
                     </Link>
@@ -72,7 +72,7 @@ const menu = ref(false)
 
                     <Link :href="route('categories.create')">
                     <li
-                        class="flex items-center p-2 text-gray-900 rounded-lg border border-gray-300 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                             class="w-5 h-5  text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white">
                             <path fill-rule="evenodd"

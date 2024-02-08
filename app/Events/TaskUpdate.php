@@ -14,15 +14,19 @@ class TaskUpdate implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $message;
-
     /**
      * Create a new event instance.
      */
-    public function __construct($message)
-    {
-        $this->message = $message;
-    }
+    public function __construct(
+        public $task,
+        public $subtaskId,
+        public $status,
+        public $dropResult,
+        public $cardData,
+        public $draggingCard,
+        public $auth_id
+    )
+    {}
 
     /**
      * Get the channels the event should broadcast on.

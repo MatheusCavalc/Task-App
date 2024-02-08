@@ -1,12 +1,23 @@
 <script setup>
-defineProps(['task', 'created'])
+import { Link } from '@inertiajs/vue3';
+
+const props = defineProps(['task', 'created'])
 </script>
 
 <template>
-    <div class="p-4 lg:p-0">
-        <p class="text-3xl">
-            {{ task.name }}
-        </p>
+    <div class="p-4 lg:p-0 mt-2">
+        <div class="lg:flex lg:justify-between space-y-4 lg:space-y-1">
+            <p class="text-3xl">
+                {{ task.name }}
+            </p>
+
+            <div v-if="$page.props.auth.user.id == task.user_id">
+                <Link :href="route('task.admin', task.id)"
+                    class="text-white bg-black hover:bg-gray-900 font-medium rounded-full text-sm px-5 py-2 me-2 mb-2">
+                Add Admin
+                </Link>
+            </div>
+        </div>
 
         <hr class="my-3">
 

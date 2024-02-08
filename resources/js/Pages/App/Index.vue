@@ -6,10 +6,10 @@ import { onMounted } from 'vue';
 defineProps(['image', 'image2'])
 
 onMounted(() => {
-    window.Echo.channel('update')
-        .listen('TaskUpdate', (e) => {
-            alert('Functional')
-        });
+    //window.Echo.channel('update')
+    //    .listen('TaskUpdate', (e) => {
+    //        alert('Functional')
+    //    });
 }
 );
 </script>

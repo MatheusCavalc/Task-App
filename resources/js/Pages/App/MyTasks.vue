@@ -5,7 +5,7 @@ import EditTaskForm from '@/Components/EditTaskForm.vue'
 import { Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
-const props = defineProps(['tasks', 'categories', 'task_status']);
+const props = defineProps(['tasks', 'teams_tasks', 'categories', 'task_status']);
 
 const showModal = ref(false)
 const createTask = ref(false)
@@ -64,39 +64,85 @@ const closeModal = () => {
             </div>
 
             <div class="mt-3">
-                <div v-for="task in tasks" :key="task.id" class="mb-3">
-                    <div
-                        class="relative group block max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow hover:bg-black hove:text-white">
-                        <Link :href="route('task.details', task.id)" class="">
-                        <div class="relative">
-                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 group-hover:text-white">{{
-                                task.name
-                            }}
-                            </h5>
-                            <p class="font-normal text-gray-700 group-hover:text-white my-2">{{ task.description }}</p>
-                        </div>
+                <div v-if="tasks.length > 0" class="border max-w-md rounded-lg p-2 mb-5">
+                    <p class="my-2 text-2xl font-bold">My Tasks</p>
+                    <div v-for="task in tasks" :key="task.id" class="mb-3">
+                        <div
+                            class="relative group block max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow hover:bg-black hove:text-white">
+                            <Link :href="route('task.details', task.id)" class="">
+                            <div class="relative">
+                                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 group-hover:text-white">{{
+                                    task.name
+                                }}
+                                </h5>
+                                <p class="font-normal text-gray-700 group-hover:text-white my-2">{{ task.description }}</p>
+                            </div>
 
-                        <div class="flex gap-4 mt-2">
-                            <p class="group-hover:text-white">{{ task.formatted_created_at }}</p><!-- task.created_at -->
-                            <p class="text-gray-500 group-hover:text-white">|</p>
-                            <p class="group-hover:text-white"><span
-                                    class="px-3 bg-gray-200 rounded group-hover:bg-white group-hover:text-black">{{
-                                        (task.subtasks).length }}</span> Subtasks</p>
-                            <p class="text-gray-500 group-hover:text-white">|</p>
-                            <p class="group-hover:text-white">{{ task.category.name }}</p>
-                            <p class="text-gray-500 group-hover:text-white">|</p>
-                            <p class="group-hover:text-white">{{ task.status }}</p>
-                        </div>
-                        </Link>
+                            <div class="flex gap-4 mt-2">
+                                <p class="group-hover:text-white">{{ task.formatted_created_at }}</p>
+                                <!-- task.created_at -->
+                                <p class="text-gray-500 group-hover:text-white">|</p>
+                                <p class="group-hover:text-white"><span
+                                        class="px-3 bg-gray-200 rounded group-hover:bg-white group-hover:text-black">{{
+                                            (task.subtasks).length }}</span> Subtasks</p>
+                                <p class="text-gray-500 group-hover:text-white">|</p>
+                                <p class="group-hover:text-white">{{ task.category.name }}</p>
+                                <p class="text-gray-500 group-hover:text-white">|</p>
+                                <p class="group-hover:text-white">{{ task.status }}</p>
+                            </div>
+                            </Link>
 
-                        <div class="absolute top-5 right-4">
-                            <button @click="openEditForm(task)">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                    stroke="currentColor" class="w-5 h-5 group-hover:stroke-white">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-                                </svg>
-                            </button>
+                            <div class="absolute top-5 right-4">
+                                <button @click="openEditForm(task)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="w-5 h-5 group-hover:stroke-white">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-if="teams_tasks.length > 0" class="border max-w-md rounded-lg p-2">
+                    <p class="my-2 text-2xl font-bold">Team Tasks</p>
+                    <div v-for="task in teams_tasks" :key="task.task.id" class="mb-3">
+                        <div
+                            class="relative group block max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow hover:bg-black hove:text-white">
+                            <Link :href="route('task.details', task.task.id)" class="">
+                            <div class="relative">
+                                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 group-hover:text-white">{{
+                                    task.task.name
+                                }}
+                                </h5>
+                                <p class="font-normal text-gray-700 group-hover:text-white my-2">{{ task.task.description }}
+                                </p>
+                            </div>
+
+                            <div class="flex gap-4 mt-2">
+                                <p class="group-hover:text-white">{{ task.formatted_created_at }}</p>
+                                <!-- task.created_at -->
+                                <p class="text-gray-500 group-hover:text-white">|</p>
+                                <p class="group-hover:text-white"><span
+                                        class="px-3 bg-gray-200 rounded group-hover:bg-white group-hover:text-black">{{
+                                            (task.task.subtasks).length }}</span> Subtasks</p>
+                                <p class="text-gray-500 group-hover:text-white">|</p>
+                                <p class="group-hover:text-white">{{ task.task.category.name }}</p>
+                                <p class="text-gray-500 group-hover:text-white">|</p>
+                                <p class="group-hover:text-white">{{ task.task.status }}</p>
+                            </div>
+                            </Link>
+
+                            <div class="absolute top-5 right-4">
+                                <button @click="openEditForm(task.task)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="w-5 h-5 group-hover:stroke-white">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

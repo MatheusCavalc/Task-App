@@ -7,7 +7,7 @@ import { Container, Draggable } from "vue3-smooth-dnd";
 import { router } from '@inertiajs/vue3'
 import { onMounted, ref } from 'vue';
 
-const props = defineProps(['task', 'created_on']);
+const props = defineProps(['task', 'created_on', 'auth_id']);
 
 const draggingCard = ref({
     lane: "",
@@ -63,15 +63,20 @@ const handleDrop = (lane, dropResult) => {
     }
 
     if (removedIndex !== null) {
-        cards.value[lane].splice(removedIndex, 1);
+        cards.value[lane].splice(removedIndex, 1); //need change code to share task for more users
     }
 
     if (addedIndex !== null) {
-        cards.value[lane].splice(addedIndex, 0, draggingCard.value.cardData);
+        cards.value[lane].splice(addedIndex, 0, draggingCard.value.cardData); //need change code to share task for more users
 
         router.put(route('subtasks.status', { card: draggingCard.value.cardData.id }), {
             status: lane,
-            subtaskId: draggingCard.value.cardData.id
+            subtaskId: draggingCard.value.cardData.id,
+            cardData: draggingCard.value.cardData,
+            task: props.task.id,
+            dropResult: dropResult,
+
+            draggingCard: draggingCard.value
         }, { preserveScroll: true });
     }
 
@@ -119,6 +124,37 @@ const removeSubtask = (data) => {
 }
 
 loadColumns(props.task.subtasks)
+
+onMounted(() => {
+    window.Echo.channel('update')
+        .listen('TaskUpdate', (e) => {
+            if (e.task == props.task.id && props.auth_id != e.auth_id) { //&& props.auth_id != e.auth_id
+
+                if (e.draggingCard.lane == 'waitingArray') {
+                    let indexToRemove = waitingArray.value.findIndex(item => item.id === e.draggingCard.cardData.id);
+                    waitingArray.value.splice(indexToRemove, 1);
+                } else if (e.draggingCard.lane == 'inProgressArray') {
+                    let indexToRemove = inProgressArray.value.findIndex(item => item.id === e.draggingCard.cardData.id);
+                    inProgressArray.value.splice(indexToRemove, 1);
+                } else {
+                    let indexToRemove = finishedArray.value.findIndex(item => item.id === e.draggingCard.cardData.id);
+                    finishedArray.value.splice(indexToRemove, 1);
+                }
+
+                const lane = e.status
+                const { removedIndex, addedIndex } = e.dropResult
+
+                if (removedIndex !== null) {
+                    cards.value[lane].splice(removedIndex, 1);
+                }
+
+                if (addedIndex !== null) {
+                    cards.value[lane].splice(addedIndex, 0, e.cardData);
+                }
+            }
+        });
+}
+);
 </script>
 
 <template>
