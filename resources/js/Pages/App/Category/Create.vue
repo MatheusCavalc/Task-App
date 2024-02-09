@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { useForm } from '@inertiajs/vue3'
+import { useForm, Head } from '@inertiajs/vue3'
 
 const form = useForm({
     name: ''
@@ -12,6 +12,8 @@ const submit = () => {
 </script>
 
 <template>
+    <Head title="Create Category" />
+
     <AppLayout>
         <div class="py-6 px-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

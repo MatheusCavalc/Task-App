@@ -16,3 +16,7 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('update', function () {
     return true;
 });
+
+Broadcast::channel('create', function () {
+    return true;
+});

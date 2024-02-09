@@ -1,6 +1,6 @@
 <script setup>
 import HomeLayout from '@/Layouts/HomeLayout.vue'
-import { Link } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import { onMounted } from 'vue';
 
 defineProps(['image', 'image2'])
@@ -15,6 +15,8 @@ onMounted(() => {
 </script>
 
 <template>
+    <Head title="Home" />
+
     <HomeLayout>
 
         <div class="relative grid grid-cols-1 mx-auto text-white max-w-7xl gap-x-16 lg:grid-cols-2 lg:px-8 lg:pt-24">

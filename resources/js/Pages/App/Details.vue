@@ -5,6 +5,7 @@ import CreateSubtask from '@/Components/CreateSubtask.vue';
 import SubtaskItem from '@/Components/SubtaskItem.vue';
 import { Container, Draggable } from "vue3-smooth-dnd";
 import { router } from '@inertiajs/vue3'
+import { Head } from '@inertiajs/vue3';
 import { onMounted, ref } from 'vue';
 
 const props = defineProps(['task', 'created_on', 'auth_id']);
@@ -98,7 +99,6 @@ const loadData = (data) => {
             finishedArray.value.push(data);
             break;
         default:
-            // Lida com qualquer outro status, se necessário
             break;
     }
 }
@@ -153,11 +153,21 @@ onMounted(() => {
                 }
             }
         });
+
+
+    window.Echo.channel('create')
+        .listen('TaskCreate', (e) => {
+            if (e.data.task_id == props.task.id && props.auth_id != e.auth_id) {
+                loadData(e.data)
+            }
+        });
 }
 );
 </script>
 
 <template>
+    <Head :title="task.name" />
+
     <AppLayout>
         <section class="lg:p-4">
             <TaskHeader :task="task" :created="created_on" />

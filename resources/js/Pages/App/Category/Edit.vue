@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { useForm } from '@inertiajs/vue3';
+import { useForm, Head } from '@inertiajs/vue3';
 
 const props = defineProps(['category']);
 
@@ -15,6 +15,8 @@ const submit = () => {
 </script>
 
 <template>
+    <Head title="Edit Category" />
+
     <AppLayout>
         <div class="py-6 px-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

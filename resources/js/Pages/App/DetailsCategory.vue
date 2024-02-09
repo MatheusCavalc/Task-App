@@ -1,12 +1,14 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, Head } from '@inertiajs/vue3';
 
 const props = defineProps(['tasks']);
 
 </script>
 
 <template>
+    <Head :title="`${tasks[0].category.name} Tasks`" />
+
     <AppLayout>
         <section class="p-4">
             <div>

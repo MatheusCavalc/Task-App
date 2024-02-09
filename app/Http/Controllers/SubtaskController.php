@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TaskCreate;
 use App\Models\Subtask;
 use App\Models\Task;
 use Illuminate\Http\Request;
@@ -38,7 +39,10 @@ class SubtaskController extends Controller
             'status' => 'required',
         ]);
 
-        //dd($data);
+        event(new TaskCreate(
+            $data,
+            auth()->user()->id
+        ));
 
         $subtask = Subtask::create($data);
 

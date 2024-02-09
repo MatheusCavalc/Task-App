@@ -2,7 +2,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import CreateTaskForm from '@/Components/CreateTaskForm.vue';
 import EditTaskForm from '@/Components/EditTaskForm.vue'
-import { Link } from '@inertiajs/vue3';
+import { Link, Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 const props = defineProps(['tasks', 'teams_tasks', 'categories', 'task_status']);
@@ -44,6 +44,8 @@ const closeModal = () => {
 </script>
 
 <template>
+    <Head title="My Tasks" />
+
     <AppLayout>
         <section class="p-4">
             <div>

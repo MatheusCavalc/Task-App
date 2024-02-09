@@ -1,11 +1,13 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, Head } from '@inertiajs/vue3';
 
 const props = defineProps(['categories'])
 </script>
 
 <template>
+    <Head title="Categories" />
+
     <AppLayout>
         <div class="p-4">
             <div class="">
