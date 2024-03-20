@@ -1,11 +1,16 @@
 <script setup>
+import ToastMessage from '@/Components/ToastMessage.vue'
+import AdminList from '@/Components/AdminList.vue';
+import CloseIcon from '@/Components/Icons/CloseIcon.vue';
+import MenuIcon from '@/Components/Icons/MenuIcon.vue';
 import axios from 'axios';
 import { ref } from 'vue';
 
-const props = defineProps(['task'])
+const props = defineProps(['task', 'task_admins'])
 
 const open = ref(false)
 const adminModal = ref(false)
+const adminListModal = ref(false)
 const toast = ref(false)
 
 const email = ref('')
@@ -35,11 +40,7 @@ const openToast = () => {
         <!-- Icon -->
         <button type="button" @click="open = !open" id="user-menu-button" aria-expanded="false"
             data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
-            </svg>
+            <MenuIcon />
         </button>
 
         <Transition>
@@ -52,7 +53,7 @@ const openToast = () => {
                     <span class="block text-sm  text-gray-500 truncate">Oi</span>
                 </div>
                 <ul class="py-2 w-36" aria-labelledby="user-menu-button">
-                    <li>
+                    <li v-if="$page.props.auth.user.id == task.user_id">
                         <button @click="adminModal = true"
                             class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
                             Add Admin
@@ -69,7 +70,8 @@ const openToast = () => {
                         </button>
                     </li>
                     <li>
-                        <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
+                        <button @click="adminListModal = true"
+                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
                             Admin List
                         </button>
                     </li>
@@ -84,14 +86,9 @@ const openToast = () => {
             v-show="adminModal">
             <div class="relative w-4/5 lg:mx-auto lg:w-2/5">
                 <div class="w-full pt-8 pb-6 bg-white rounded-md lg:pr-2 lg:pl-3">
-                    <div class="flex justify-between">
-                        <p class="text-2xl font-bold tracking-tight"></p>
-
+                    <div class="flex justify-end">
                         <button class="mr-5 lg:mr-5" @click="adminModal = false">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
+                            <CloseIcon />
                         </button>
                     </div>
 
@@ -111,11 +108,11 @@ const openToast = () => {
                     <div class="flex flex-row-reverse mt-10 mr-5">
                         <button type="submit" @click="submit"
                             class="py-2 ml-5 text-base tracking-tighter text-white bg-black rounded-full px-7">
-                            Adicionar
+                            Add
                         </button>
                         <button @click="adminModal = false"
                             class="py-2 text-base tracking-tighter bg-white border border-black rounded-full px-7">
-                            Fechar
+                            Close
                         </button>
                     </div>
                 </div>
@@ -125,18 +122,39 @@ const openToast = () => {
     <div v-show="adminModal" class="fixed inset-0 z-40 bg-black opacity-75"></div>
 
     <Transition>
-        <!-- Toast success -->
-        <div v-show="toast" class="fixed bottom-4 right-4 z-50">
-            <div
-                class="flex items-center w-full max-w-xs p-4 space-x-3 bg-white divide-x divide-black rounded-lg shadow-xl space-x">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                </svg>
-                <div class="pl-4 text-sm font-bold">
-                    <p>{{ message }}</p>
+        <!-- Modal all admin -->
+        <div class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto"
+            v-show="adminListModal">
+            <div class="relative w-4/5 lg:mx-auto lg:w-3/5">
+                <div class="w-full pt-8 pb-6 bg-white rounded-md lg:pr-2 lg:pl-3">
+                    <div class="flex justify-end">
+                        <button class="mr-5 lg:mr-5" @click="adminListModal = false">
+                            <CloseIcon />
+                        </button>
+                    </div>
+
+                    <AdminList :task="task" :task_admins="task_admins" />
+
+                    <div class="flex flex-row-reverse mt-10 mr-5">
+                        <button type="submit" @click="submit"
+                            class="py-2 ml-5 text-base tracking-tighter text-white bg-black rounded-full px-7">
+                            Add
+                        </button>
+                        <button @click="adminListModal = false"
+                            class="py-2 text-base tracking-tighter bg-white border border-black rounded-full px-7">
+                            Close
+                        </button>
+                    </div>
                 </div>
             </div>
+        </div>
+    </Transition>
+    <div v-show="adminListModal" class="fixed inset-0 z-40 bg-black opacity-75"></div>
+
+    <Transition>
+        <!-- Toast success -->
+        <div v-show="toast" class="fixed bottom-4 right-4 z-50">
+            <ToastMessage :message="message" />
         </div>
     </Transition>
 </template>

@@ -2,7 +2,7 @@
 import { Link } from '@inertiajs/vue3';
 import DetailsMenuDropdown from '@/Components/DetailsMenuDropdown.vue'
 
-const props = defineProps(['task', 'created'])
+const props = defineProps(['task', 'created', 'task_admins'])
 </script>
 
 <template>
@@ -12,24 +12,16 @@ const props = defineProps(['task', 'created'])
                 {{ task.name }}
             </p>
 
-            <div v-if="$page.props.auth.user.id == task.user_id">
-
-                <DetailsMenuDropdown :task="props.task" />
-
-                <!--
-                    <Link :href="route('task.admin', task.id)"
-                    class="text-white bg-black hover:bg-gray-900 font-medium rounded-full text-sm px-5 py-2 me-2 mb-2">
-                    Add Admin
-                </Link>
-            -->
+            <div>
+                <DetailsMenuDropdown :task="props.task" :task_admins="task_admins" />
             </div>
         </div>
 
         <hr class="my-3">
 
         <div class="text-lg flex gap-1 mt-2">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                class="w-5 h-5 mt-1">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-5 h-5 mt-1">
                 <path stroke-linecap="round" stroke-linejoin="round"
                     d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
@@ -39,8 +31,8 @@ const props = defineProps(['task', 'created'])
             </p>
         </div>
         <div class="text-lg flex gap-1 mt-2">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                class="w-5 h-5 mt-1">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-5 h-5 mt-1">
                 <path stroke-linecap="round" stroke-linejoin="round"
                     d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
             </svg>

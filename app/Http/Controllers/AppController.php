@@ -47,11 +47,12 @@ class AppController extends Controller
 
     public function detailsTask($id)
     {
-        $task = Task::with('subtasks', 'category')->find($id);
+        $task = Task::with('subtasks', 'category', 'user')->find($id);
         $created_on = $task->created_at->format('d M');
         $auth_id = auth()->user()->id;
+        $task_admins = TaskUser::with('user')->where('task_id', $id)->get();
 
-        return Inertia::render('App/Details', compact('task', 'created_on', 'auth_id'));
+        return Inertia::render('App/Details', compact('task', 'created_on', 'auth_id', 'task_admins'));
     }
 
     public function detailsCategory($id)

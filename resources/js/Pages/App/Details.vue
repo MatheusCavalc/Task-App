@@ -8,7 +8,7 @@ import { router } from '@inertiajs/vue3'
 import { Head } from '@inertiajs/vue3';
 import { onMounted, ref } from 'vue';
 
-const props = defineProps(['task', 'created_on', 'auth_id']);
+const props = defineProps(['task', 'created_on', 'auth_id', 'task_admins']);
 
 const draggingCard = ref({
     lane: "",
@@ -170,7 +170,7 @@ onMounted(() => {
 
     <AppLayout>
         <section class="lg:p-4">
-            <TaskHeader :task="task" :created="created_on" />
+            <TaskHeader :task="task" :created="created_on" :task_admins="task_admins" />
 
             <div
                 class="mt-10 flex gap-3 lg:grid lg:grid-cols-3 lg:gap-2 items-start overflow-x-auto hide-scrollbar pb-20 lg:pb-5 px-3 lg:px-0">
