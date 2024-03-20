@@ -94,17 +94,24 @@ class TaskController extends Controller
             'task' => 'required|exists:tasks,id',
         ]);
 
+        $user = User::where('email', $request->email)->first();
         $task = Task::where('id', $request->task)->first();
 
-        if ($task->user_id == auth()->user()->id) {
-            $user = User::where('email', $request->email)->first();
+        $is_admin = TaskUser::where('task_id', $request->task)->where('user_id', $user->id)->exists();
 
-            TaskUser::updateOrCreate([
-                'task_id' => $request->task,
+        if ($is_admin) {
+            return response()->json([
+                'message' => 'Is admin'
+            ], 200);
+        } else if($user) {
+            TaskUser::create([
+                'task_id' => $task->id,
                 'user_id' => $user->id
             ]);
 
-            return to_route('task.details', $request->task);
+            return response()->json([
+                'message' => 'New admin add'
+            ], 200);
         }
     }
 }

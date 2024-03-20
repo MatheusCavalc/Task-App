@@ -173,7 +173,7 @@ onMounted(() => {
             <TaskHeader :task="task" :created="created_on" />
 
             <div
-                class="mt-10 flex gap-3 lg:grid lg:grid-cols-3 lg:gap-2 items-start overflow-x-auto pb-20 lg:pb-5 px-3 lg:px-0">
+                class="mt-10 flex gap-3 lg:grid lg:grid-cols-3 lg:gap-2 items-start overflow-x-auto hide-scrollbar pb-20 lg:pb-5 px-3 lg:px-0">
                 <div class="border p-3 rounded-lg border-red-400 w-64 flex-shrink-0 lg:w-full">
                     <div class="flex justify-start mb-2">
                         <p class="font bold text-lg">Waiting</p>
@@ -182,7 +182,7 @@ onMounted(() => {
                     <Container group-name="subtasks" @drag-start="handleDragStart('waitingArray', $event)"
                         @drop="handleDrop('waitingArray', $event)" :get-child-payload="getChildPayload"
                         :drop-placeholder="{ className: 'placeholder' }">
-                        <Draggable v-for="(item, i) in waitingArray" :key="item.id" class="cursor-move">
+                        <Draggable v-for="(item, i) in waitingArray" :key="item.id" class="cursor-grabbing">
                             <SubtaskItem :index="i" :item="item" status="Waiting" array="waitingArray"
                                 @edit-subtask="editSubtask" @delete-subtask="removeSubtask" />
                         </Draggable>
@@ -199,7 +199,7 @@ onMounted(() => {
                     <Container group-name="subtasks" @drag-start="handleDragStart('inProgressArray', $event)"
                         @drop="handleDrop('inProgressArray', $event)" :get-child-payload="getChildPayload"
                         :drop-placeholder="{ className: 'placeholder' }">
-                        <Draggable v-for="(item, i) in inProgressArray" :key="item.id" class="cursor-move">
+                        <Draggable v-for="(item, i) in inProgressArray" :key="item.id" class="cursor-grabbing">
                             <SubtaskItem :index="i" :item="item" status="In Progress" array="inProgressArray"
                                 @edit-subtask="editSubtask" @delete-subtask="removeSubtask" />
                         </Draggable>
@@ -216,7 +216,7 @@ onMounted(() => {
                     <Container group-name="subtasks" @drag-start="handleDragStart('finishedArray', $event)"
                         @drop="handleDrop('finishedArray', $event)" :get-child-payload="getChildPayload"
                         :drop-placeholder="{ className: 'placeholder' }">
-                        <Draggable v-for="(item, i) in finishedArray" :key="item.id" class="cursor-move">
+                        <Draggable v-for="(item, i) in finishedArray" :key="item.id" class="cursor-grabbing">
                             <SubtaskItem :index="i" :item="item" status="Finished" array="finishedArray"
                                 @edit-subtask="editSubtask" @delete-subtask="removeSubtask" />
                         </Draggable>
