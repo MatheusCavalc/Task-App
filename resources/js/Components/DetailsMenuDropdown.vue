@@ -1,8 +1,9 @@
 <script setup>
 import ToastMessage from '@/Components/ToastMessage.vue'
-import AdminList from '@/Components/AdminList.vue';
+import HistoryModal from '@/Components/HistoryModal.vue';
 import CloseIcon from '@/Components/Icons/CloseIcon.vue';
 import MenuIcon from '@/Components/Icons/MenuIcon.vue';
+import AdminList from '@/Components/AdminList.vue';
 import axios from 'axios';
 import { ref } from 'vue';
 
@@ -11,6 +12,7 @@ const props = defineProps(['task', 'task_admins'])
 const open = ref(false)
 const adminModal = ref(false)
 const adminListModal = ref(false)
+const historyChangesModal = ref(false)
 const toast = ref(false)
 
 const email = ref('')
@@ -33,25 +35,24 @@ const openToast = () => {
     toast.value = true
     setTimeout(() => toast.value = false, 2500)
 }
+
+const openAdminModal = () => {
+    adminListModal.value = false
+    adminModal.value = true
+}
 </script>
 
 <template>
     <div class="relative">
         <!-- Icon -->
-        <button type="button" @click="open = !open" id="user-menu-button" aria-expanded="false"
-            data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+        <button type="button" @click="open = !open">
             <MenuIcon />
         </button>
 
         <Transition>
             <!-- Dropdown menu -->
             <div v-show="open"
-                class="z-40 absolute top-10 lg:top-9 right-1 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
-                id="user-dropdown">
-                <div class="px-4 py-3">
-                    <span class="block text-sm text-gray-900">Oi</span>
-                    <span class="block text-sm  text-gray-500 truncate">Oi</span>
-                </div>
+                class="z-40 absolute top-10 lg:top-9 right-1 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-xl">
                 <ul class="py-2 w-36" aria-labelledby="user-menu-button">
                     <li v-if="$page.props.auth.user.id == task.user_id">
                         <button @click="adminModal = true"
@@ -65,14 +66,15 @@ const openToast = () => {
                         </button>
                     </li>
                     <li>
-                        <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
-                            Changes Register
-                        </button>
-                    </li>
-                    <li>
                         <button @click="adminListModal = true"
                             class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
                             Admin List
+                        </button>
+                    </li>
+                    <li>
+                        <button @click="historyChangesModal = true"
+                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
+                            Changes Register
                         </button>
                     </li>
                 </ul>
@@ -80,12 +82,12 @@ const openToast = () => {
         </Transition>
     </div>
 
+    <!-- Modal to new admin -->
     <Transition>
-        <!-- Modal to new admin -->
         <div class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto"
             v-show="adminModal">
-            <div class="relative w-4/5 lg:mx-auto lg:w-2/5">
-                <div class="w-full pt-8 pb-6 bg-white rounded-md lg:pr-2 lg:pl-3">
+            <div class="relative w-11/12 lg:mx-auto lg:w-2/5">
+                <div class="w-full pt-8 pb-6 bg-white rounded-tr-xl rounded-bl-xl lg:pr-5 lg:pl-3">
                     <div class="flex justify-end">
                         <button class="mr-5 lg:mr-5" @click="adminModal = false">
                             <CloseIcon />
@@ -106,12 +108,12 @@ const openToast = () => {
                     </div>
 
                     <div class="flex flex-row-reverse mt-10 mr-5">
-                        <button type="submit" @click="submit"
-                            class="py-2 ml-5 text-base tracking-tighter text-white bg-black rounded-full px-7">
+                        <button @click="submit"
+                            class="py-2 ml-5 text-base tracking-tighter text-white transition-all delay-100 hover:bg-white hover:text-black border border-black bg-black rounded-full px-7">
                             Add
                         </button>
                         <button @click="adminModal = false"
-                            class="py-2 text-base tracking-tighter bg-white border border-black rounded-full px-7">
+                            class="py-2 text-base tracking-tighter bg-white transition-all delay-100 hover:bg-black hover:text-white border border-black rounded-full px-7">
                             Close
                         </button>
                     </div>
@@ -119,14 +121,13 @@ const openToast = () => {
             </div>
         </div>
     </Transition>
-    <div v-show="adminModal" class="fixed inset-0 z-40 bg-black opacity-75"></div>
 
+    <!-- Modal all admin -->
     <Transition>
-        <!-- Modal all admin -->
         <div class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto"
             v-show="adminListModal">
-            <div class="relative w-4/5 lg:mx-auto lg:w-3/5">
-                <div class="w-full pt-8 pb-6 bg-white rounded-md lg:pr-2 lg:pl-3">
+            <div class="relative w-11/12 lg:mx-auto lg:w-3/5">
+                <div class="w-full pt-8 pb-6 bg-white rounded-tr-xl rounded-bl-xl lg:pr-5 lg:pl-3">
                     <div class="flex justify-end">
                         <button class="mr-5 lg:mr-5" @click="adminListModal = false">
                             <CloseIcon />
@@ -136,12 +137,12 @@ const openToast = () => {
                     <AdminList :task="task" :task_admins="task_admins" />
 
                     <div class="flex flex-row-reverse mt-10 mr-5">
-                        <button type="submit" @click="submit"
-                            class="py-2 ml-5 text-base tracking-tighter text-white bg-black rounded-full px-7">
+                        <button type="submit" @click="openAdminModal"
+                            class="py-2 ml-5 text-base tracking-tighter transition-all delay-100 hover:bg-white hover:text-black border border-black text-white bg-black rounded-full px-7">
                             Add
                         </button>
                         <button @click="adminListModal = false"
-                            class="py-2 text-base tracking-tighter bg-white border border-black rounded-full px-7">
+                            class="py-2 text-base tracking-tighter bg-white transition-all delay-100 hover:bg-black hover:text-white border border-black rounded-full px-7">
                             Close
                         </button>
                     </div>
@@ -149,7 +150,34 @@ const openToast = () => {
             </div>
         </div>
     </Transition>
-    <div v-show="adminListModal" class="fixed inset-0 z-40 bg-black opacity-75"></div>
+
+    <!-- Modal all admin -->
+    <Transition>
+        <div class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto"
+            v-show="historyChangesModal">
+            <div class="relative w-11/12 lg:mx-auto lg:w-3/5">
+                <div class="w-full pt-8 pb-6 bg-white rounded-tr-xl rounded-bl-xl lg:pr-5 pl-3">
+                    <div class="flex justify-end">
+                        <button class="mr-5 lg:mr-5" @click="historyChangesModal = false">
+                            <CloseIcon />
+                        </button>
+                    </div>
+
+                    <HistoryModal :history="task" />
+
+                    <div class="flex flex-row-reverse mt-5 mr-5">
+                        <button @click="historyChangesModal = false"
+                            class="py-2 text-base tracking-tighter bg-white transition-all delay-100 hover:bg-black hover:text-white border border-black rounded-full px-7">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </Transition>
+
+    <div v-show="historyChangesModal || adminListModal || adminModal" class="fixed inset-0 z-40 bg-black opacity-75">
+    </div>
 
     <Transition>
         <!-- Toast success -->

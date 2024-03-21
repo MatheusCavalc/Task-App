@@ -27,6 +27,11 @@ class Task extends Model
         return $this->hasMany(Subtask::class);
     }
 
+    public function subtasksHistory()
+    {
+        return $this->hasMany(SubtaskHistory::class);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

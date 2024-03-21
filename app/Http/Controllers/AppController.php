@@ -7,6 +7,7 @@ use App\Enums\TaskStatusEnum;
 use App\Events\TaskUpdate;
 use App\Models\Category;
 use App\Models\Subtask;
+use App\Models\SubtaskHistory;
 use App\Models\Task;
 use App\Models\TaskUser;
 use App\Models\User;
@@ -47,7 +48,13 @@ class AppController extends Controller
 
     public function detailsTask($id)
     {
-        $task = Task::with('subtasks', 'category', 'user')->find($id);
+        $task = Task::with([
+            'subtasks',
+            'category',
+            'user',
+            'subtasksHistory.user' => fn ($query) => $query->orderBy('id', 'desc')
+        ])->find($id);
+
         $created_on = $task->created_at->format('d M');
         $auth_id = auth()->user()->id;
         $task_admins = TaskUser::with('user')->where('task_id', $id)->get();
@@ -64,14 +71,16 @@ class AppController extends Controller
 
     public function updateStatus(Request $request)
     {
+        //Validate
         request()->validate([
-            'subtaskId' => ['required'], //, 'exists:card_lists,id'
+            'subtaskId' => ['required', 'exists:subtasks,id'], //, 'exists:card_lists,id'
             'status' => ['required'],
             'task' => ['required'],
             'dropResult' => ['required'],
             'cardData' => ['required']
         ]);
 
+        //Setting status with enums
         $options = [
             'inProgressArray' => SubtaskStatusEnum::In_Progress->value,
             'waitingArray' => SubtaskStatusEnum::Waiting->value,
@@ -79,8 +88,21 @@ class AppController extends Controller
 
         $status = $options[$request->status] ?? SubtaskStatusEnum::Finished->value;
 
+        //Recording history
+        $subtask = Subtask::where('id', $request->cardData['id'])->first();
+
+        SubtaskHistory::create([
+            'user_id' => auth()->user()->id,
+            'task_id' => $subtask->task_id,
+            'name' => $subtask->name,
+            'previous_status' => $subtask->status,
+            'current_status' => $status,
+        ]);
+
+        //Update subtask status
         Subtask::where('id', $request->subtaskId)->update(['status' => $status]);
 
+        //Event for update subtask
         event(new TaskUpdate(
             $request->task,
             $request->subtaskId,
@@ -96,7 +118,7 @@ class AppController extends Controller
 
     public function adminTask(Task $task)
     {
-        if($task->user_id == auth()->user()->id) {
+        if ($task->user_id == auth()->user()->id) {
             return Inertia::render('App/Task/Admin', compact('task'));
         }
 
