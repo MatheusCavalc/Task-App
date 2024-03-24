@@ -20,3 +20,7 @@ Broadcast::channel('update', function () {
 Broadcast::channel('create', function () {
     return true;
 });
+
+Broadcast::channel('message', function () {
+    return true;
+});

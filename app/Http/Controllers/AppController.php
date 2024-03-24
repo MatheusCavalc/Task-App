@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Enums\SubtaskStatusEnum;
 use App\Enums\TaskStatusEnum;
+use App\Events\MessageCreate;
 use App\Events\TaskUpdate;
 use App\Models\Category;
+use App\Models\Message;
 use App\Models\Subtask;
 use App\Models\SubtaskHistory;
 use App\Models\Task;
@@ -52,7 +54,8 @@ class AppController extends Controller
             'subtasks',
             'category',
             'user',
-            'subtasksHistory.user' => fn ($query) => $query->orderBy('id', 'desc')
+            'subtasksHistory.user' => fn ($query) => $query->orderBy('id', 'desc'),
+            'messages.user'
         ])->find($id);
 
         $created_on = $task->created_at->format('d M');
@@ -113,6 +116,19 @@ class AppController extends Controller
             $request->draggingCard,
 
             auth()->user()->id
+        ));
+    }
+
+    public function message(Request $request)
+    {
+        $message = Message::create([
+            'user_id' => auth()->user()->id,
+            'task_id' => $request->task_id,
+            'content' => $request->message
+        ]);
+
+        event(new MessageCreate(
+            $message->load('user')
         ));
     }
 

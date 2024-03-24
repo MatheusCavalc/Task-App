@@ -34,8 +34,13 @@ Route::get('/task/{task}/details', [AppController::class, 'detailsTask'])
 Route::get('/category/{category}/details', [AppController::class, 'detailsCategory'])
     ->name('task.details.category')
     ->middleware(['auth', 'verified']);
+
 Route::put('/cards/{card}/move', [AppController::class, 'updateStatus'])
     ->name('subtasks.status')
+    ->middleware(['auth', 'verified']);
+
+Route::put('/message', [AppController::class, 'message'])
+    ->name('message')
     ->middleware(['auth', 'verified']);
 
 Route::resource('categories', CategoryController::class)

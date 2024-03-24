@@ -173,10 +173,10 @@ onMounted(() => {
             <TaskHeader :task="task" :created="created_on" :task_admins="task_admins" />
 
             <div
-                class="mt-10 flex gap-3 lg:grid lg:grid-cols-3 lg:gap-2 items-start overflow-x-auto hide-scrollbar pb-20 lg:pb-5 px-3 lg:px-0">
-                <div class="border p-3 rounded-lg border-red-400 w-64 flex-shrink-0 lg:w-full">
+                class="flex items-start gap-3 px-3 pb-20 mt-10 overflow-x-auto lg:grid lg:grid-cols-3 lg:gap-2 hide-scrollbar lg:pb-5 lg:px-0">
+                <div class="flex-shrink-0 w-64 p-3 border border-red-400 rounded-lg lg:w-full">
                     <div class="flex justify-start mb-2">
-                        <p class="font bold text-lg">Waiting</p>
+                        <p class="text-lg font bold">Waiting</p>
                     </div>
 
                     <Container group-name="subtasks" @drag-start="handleDragStart('waitingArray', $event)"
@@ -191,9 +191,9 @@ onMounted(() => {
                     <CreateSubtask status="Waiting" :task_id="task.id" @update-column="loadData" />
                 </div>
 
-                <div class="border p-3 rounded-lg border-yellow-400 w-64 flex-shrink-0 lg:w-full">
+                <div class="flex-shrink-0 w-64 p-3 border border-yellow-400 rounded-lg lg:w-full">
                     <div class="flex justify-start mb-2">
-                        <p class="font bold text-lg">In Progress</p>
+                        <p class="text-lg font bold">In Progress</p>
                     </div>
 
                     <Container group-name="subtasks" @drag-start="handleDragStart('inProgressArray', $event)"
@@ -208,9 +208,9 @@ onMounted(() => {
                     <CreateSubtask status="In Progress" :task_id="task.id" @update-column="loadData" />
                 </div>
 
-                <div class="border p-3 rounded-lg border-blue-400 w-64 flex-shrink-0 lg:w-full">
+                <div class="flex-shrink-0 w-64 p-3 border border-blue-400 rounded-lg lg:w-full">
                     <div class="flex justify-start mb-2">
-                        <p class="font bold text-lg">Finished</p>
+                        <p class="text-lg font bold">Finished</p>
                     </div>
 
                     <Container group-name="subtasks" @drag-start="handleDragStart('finishedArray', $event)"
