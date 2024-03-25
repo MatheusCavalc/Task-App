@@ -17,6 +17,7 @@ const statusClasses = {
 const classes = ref(statusClasses[props.status] || '');
 
 const edit = ref(false)
+const openEdit = ref(false)
 
 const form = reactive({
     name: props.item.name,
@@ -52,12 +53,12 @@ function deleteTask() {
 </script>
 
 <template>
-    <div :class="classes" v-if="!edit" @dblclick="edit = true">
+    <div :class="classes" v-if="!edit" @dblclick="edit = true" @mouseover="openEdit = true" @mouseleave="openEdit = false">
         <p>
             {{ item.name }}
         </p>
 
-        <button @click="edit = true">
+        <button v-show="openEdit" @click="edit = true">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                 class="w-4 h-4">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -68,18 +69,18 @@ function deleteTask() {
 
     <div v-if="edit" class="">
         <form @submit.prevent="submit">
-            <div class="mb-1 flex">
+            <div class="flex mb-1">
                 <input type="text" id="name" placeholder="New Subtask" v-model="form.name" required
-                    class="bg-gray-50 border border-gray-400 text-gray-900 rounded-l-lg border-r-0 w-full p-3">
+                    class="w-full p-3 text-gray-900 border border-r-0 border-gray-400 rounded-l-lg bg-gray-50">
                 <span @click="edit = false"
-                    class="cursor-pointer inline-flex items-center px-3 text-gray-900 bg-gray-50 border border-l-0 border-gray-400 rounded-r-0 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                    class="inline-flex items-center px-3 text-gray-900 border border-l-0 border-gray-400 cursor-pointer bg-gray-50 rounded-r-0 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-4 h-4 mt-0.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </span>
                 <span @click="deleteTask"
-                    class="cursor-pointer inline-flex items-center px-3 text-gray-900 bg-gray-50 border border-l-0 border-gray-400 rounded-r-lg dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                    class="inline-flex items-center px-3 text-gray-900 border border-l-0 border-gray-400 rounded-r-lg cursor-pointer bg-gray-50 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-4 h-4">
                         <path stroke-linecap="round" stroke-linejoin="round"

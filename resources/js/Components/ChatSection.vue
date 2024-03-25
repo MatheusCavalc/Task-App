@@ -1,6 +1,7 @@
 <script setup>
 import { router, usePage } from '@inertiajs/vue3';
 import { onMounted, ref } from 'vue';
+import moment from 'moment';
 
 const props = defineProps(['task'])
 
@@ -30,10 +31,10 @@ onMounted(() => {
 
     window.Echo.channel('message')
         .listen('MessageCreate', async (e) => {
-            //if (e.message.task_id == props.task.id && page.props.auth_id != e.message.user_id) {
-            await messages.value.push(e.message);
-            scrollToBottom();
-            //}
+            if (e.message.task_id == props.task.id) { // && page.props.auth_id != e.message.user_id
+                await messages.value.push(e.message);
+                scrollToBottom();
+            }
         });
 }
 );
@@ -61,7 +62,9 @@ onMounted(() => {
                     <div class="flex flex-col w-full gap-1 ml-2 mr-4">
                         <div class="flex items-center space-x-2 rtl:space-x-reverse">
                             <span class="text-sm font-semibold text-gray-900">{{ message.user.name }}</span>
-                            <span class="text-sm font-normal text-gray-500">{{ message.created_at }}</span>
+                            <span class="text-sm font-normal text-gray-500">
+                                {{ moment(message.created_at).utc().format('HH:mm') }}
+                            </span>
                         </div>
                         <div
                             class="flex flex-col leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl">

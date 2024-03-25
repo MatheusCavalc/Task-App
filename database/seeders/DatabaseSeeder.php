@@ -27,6 +27,14 @@ class DatabaseSeeder extends Seeder
             'remember_token' => Str::random(10),
         ]);
 
+        \App\Models\User::factory()->create([
+            'name' => 'Test',
+            'email' => 'test@test.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('12345678'),
+            'remember_token' => Str::random(10),
+        ]);
+
         \App\Models\Category::create([
             'name' => 'Job',
             'user_id' => 1,

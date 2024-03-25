@@ -1,12 +1,12 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
 import DetailsMenuDropdown from '@/Components/DetailsMenuDropdown.vue'
+import moment from 'moment';
 
-const props = defineProps(['task', 'created', 'task_admins'])
+const props = defineProps(['task', 'task_admins'])
 </script>
 
 <template>
-    <div class="p-4 lg:p-0 mt-2">
+    <div class="p-4 mt-2 lg:p-0">
         <div class="flex justify-between lg:space-y-2">
             <p class="text-xl lg:text-3xl">
                 {{ task.name }}
@@ -19,7 +19,7 @@ const props = defineProps(['task', 'created', 'task_admins'])
 
         <hr class="my-3">
 
-        <div class="text-lg flex gap-1 mt-2">
+        <div class="flex gap-1 mt-2 text-lg">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-5 h-5 mt-1">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -30,14 +30,14 @@ const props = defineProps(['task', 'created', 'task_admins'])
                 {{ task.category.name }}
             </p>
         </div>
-        <div class="text-lg flex gap-1 mt-2">
+        <div class="flex gap-1 mt-2 text-lg">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-5 h-5 mt-1">
                 <path stroke-linecap="round" stroke-linejoin="round"
                     d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
             </svg>
             <p>
-                {{ created }}
+                {{ moment(task.created_at).utc().format('DD MMM') }}
             </p>
         </div>
 
