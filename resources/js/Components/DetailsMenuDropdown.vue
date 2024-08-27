@@ -156,7 +156,7 @@ const openAdminModal = () => {
         </div>
     </Transition>
 
-    <!-- Modal all admin -->
+    <!-- Modal Change History -->
     <Transition>
         <div class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto"
             v-show="historyChangesModal">
@@ -193,12 +193,12 @@ const openAdminModal = () => {
 
     <!-- Chat -->
     <div :class="chat ? 'lg:block' : 'hidden lg:block'"
-        class="fixed z-30 right-0 bottom-0 lg:bottom-0 lg:right-4                                      w-full lg:w-72 h-full lg:h-fit bg-white lg:border-t lg:border-l lg:border-r lg:border-black lg:rounded-t-xl">
-        <div class="flex justify-between lg:px-2 lg:py-1 py-3 px-3 border-b lg:border-none border-black">
+        class="fixed bottom-0 right-0 z-30 w-full h-full bg-white lg:bottom-0 lg:right-4 lg:w-72 lg:h-fit lg:border-t lg:border-l lg:border-r lg:border-black lg:rounded-t-xl">
+        <div class="flex justify-between px-3 py-3 border-b border-black lg:px-2 lg:py-1 lg:border-none">
             <p class="text-xl lg:text-lg">Chat</p>
 
             <button @click="chat = !chat">
-                <p :class="{ '-rotate-180': chat }" class="hidden lg:block transition duration-300 transform">
+                <p :class="{ '-rotate-180': chat }" class="hidden transition duration-300 transform lg:block">
                     <ChevronIcon />
                 </p>
 
@@ -209,7 +209,7 @@ const openAdminModal = () => {
         </div>
 
         <div :class="chat ? 'lg:translate-y-0 lg:ease-out h-full lg:h-96' : 'lg:translate-y-full lg:ease-in lg:h-0'"
-            class="w-full transition duration-300 transform bg-white py-4 lg:py-0">
+            class="w-full py-4 transition duration-300 transform bg-white lg:py-0">
             <ChatSection :task="task" />
         </div>
     </div>

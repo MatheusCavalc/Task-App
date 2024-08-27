@@ -7,7 +7,7 @@ const props = defineProps(['task', 'task_admins'])
 
 <template>
     <div class="p-4 mt-2 lg:p-0">
-        <div class="flex justify-between lg:space-y-2">
+        <div class="flex items-center justify-between lg:space-y-2">
             <p class="text-xl lg:text-3xl">
                 {{ task.name }}
             </p>

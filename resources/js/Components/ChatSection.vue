@@ -12,12 +12,14 @@ const messages = ref(props.task['messages'])
 const messageContainer = ref(null);
 
 const submit = () => {
-    router.put(route('message'), {
-        task_id: props.task.id,
-        message: message.value,
-    }, { preserveScroll: true });
+    if (message.value) {
+        router.put(route('message'), {
+            task_id: props.task.id,
+            message: message.value,
+        }, { preserveScroll: true });
 
-    message.value = ''
+        message.value = ''
+    }
 }
 
 const scrollToBottom = () => {
