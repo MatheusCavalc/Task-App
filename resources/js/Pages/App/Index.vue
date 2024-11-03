@@ -15,10 +15,12 @@ onMounted(() => {
 </script>
 
 <template>
-    <Head title="Home" />
+
+    <Head title="Task App" />
 
     <HomeLayout>
 
+        <!--
         <div class="relative grid grid-cols-1 mx-auto text-white max-w-7xl gap-x-16 lg:grid-cols-2 lg:px-8 lg:pt-24">
             <div class="mt-16 lg:mt-28 bg-black py-28 lg:py-0 px-6 lg:px-0">
                 <p class="text-3xl lg:text-5xl">
@@ -69,6 +71,54 @@ onMounted(() => {
                     </svg>
                 </div>
 
+            </div>
+        </div>
+-->
+
+        <!--
+        <div class="h-screen bg-cover bg-center bg-[url('storage/home.jpeg')]">
+            <div
+                class="h-full flex justify-start items-center bg-gradient-to-b from-[#0000008f] to-[#0000008f] text-white">
+                <div class="lg:w-1/2 mx-4 lg:ml-20">
+                    <p class="text-3xl lg:text-5xl">
+                        Tasks App brings together tasks, teammates, and tools
+                    </p>
+
+                    <p class="mt-5 text-lg lg:text-2xl">
+                        Keep everything in one place, even if the team is distributed.
+                    </p>
+
+                    <p class="mt-5">
+                        <Link :href="route('login')"
+                            class="px-8 py-3 font-semibold text-black bg-white rounded-lg hover:text-gray-900 dark:hover:text-white">
+                        Sign In</Link>
+                    </p>
+                </div>
+            </div>
+        </div>
+-->
+
+        <div class="h-screen bg-white">
+            <div
+                class="flex flex-col lg:flex-row gap-8 lg:gap-0 justify-center lg:justify-between h-full items-center mx-4 lg:mx-10">
+                <div class="lg:w-1/2 space-y-6">
+                    <p class="text-3xl lg:text-5xl font-bold">
+                        <span class="traced-black">Tasks App</span> brings together tasks, teammates, and tools
+                    </p>
+
+                    <p class="text-lg lg:text-xl">
+                        Keep everything in one place, even if the team is distributed.
+                    </p>
+
+                    <p class="">
+                        <Link :href="route('login')" class="px-8 py-3 font-semibold text-white bg-black rounded-lg">
+                        Sign In</Link>
+                    </p>
+                </div>
+
+                <div>
+                    <img src="storage/home.png" class="lg:h-80 rounded-t-lg border-t border-x border-black" alt="">
+                </div>
             </div>
         </div>
 

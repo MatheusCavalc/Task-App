@@ -37,7 +37,7 @@ const menu = ref(false)
                     </Link>
                 </p>
                 <ul class="space-y-1 font-medium">
-                    <li v-for="task in this.$page.props.userData.tasks" :key="task.id">
+                    <li v-for="task in $page.props.userData.tasks" :key="task.id">
                         <Link :href="route('task.details', task.id)"
                             class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
@@ -57,7 +57,7 @@ const menu = ref(false)
                     <Link :href="route('categories.index')">
                     <p class="font-bold mt-5">CATEGORIES</p>
                     </Link>
-                    <li v-for="category in this.$page.props.userData.categories" :key="category.id">
+                    <li v-for="category in $page.props.userData.categories" :key="category.id">
                         <Link :href="route('task.details.category', category.id)"
                             class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
